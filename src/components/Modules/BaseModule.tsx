@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import { Handle, Position } from 'reactflow'
-import { InspectorTabs, useInspectorStore } from '../InspectorStore'
+import { InspectorTabs, useInspectorStore } from '../../pages/Flow/InspectorStore'
 
 export type BaseModuleProps = {
    label: string,

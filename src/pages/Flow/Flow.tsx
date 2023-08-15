@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import ReactFlow, { Background, Controls, Edge, EdgeChange, Node, NodeChange, ReactFlowInstance, applyEdgeChanges, applyNodeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
 import TopMenu from './TopMenu';
-import Inspector from '../../components/Inspector';
+import Inspector from './Inspector';
 import ModulePicker from './ModulePicker';
 import TerminateCall from '../../components/Modules/TerminateCall';
 import InboundRoute from '../../components/Modules/InboundRoute';

@@ -1,6 +1,6 @@
 import Button from '../../components/Button'
-import { useInspectorStore } from '../../components/InspectorStore';
-import { useModulePickerState } from '../../stores/modulePicker';
+import { useInspectorStore } from './InspectorStore';
+import { useModulePickerState } from './modulePickerStore';
 
 export default function TopMenu() {
 
