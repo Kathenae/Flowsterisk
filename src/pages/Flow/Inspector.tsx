@@ -1,4 +1,4 @@
-import Button from "./Button";
+import Button from "../../components/Button";
 import { useInspectorStore } from "./InspectorStore";
 
 export default function Inspector() {
