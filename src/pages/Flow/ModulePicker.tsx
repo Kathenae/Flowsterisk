@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 import Button from '../../components/Button';
-import { useModulePickerState } from '../../stores/modulePicker';
+import { useModulePickerState } from './modulePickerStore';
 import { ModuleType } from './Flow';
 
 function ModuleItem({ className, text, icon, moduleType }: PropsWithChildren<{ className?: string, text: string, icon: string, moduleType: ModuleType}>) {
