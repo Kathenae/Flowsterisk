@@ -1,11 +1,12 @@
 import {useEffect, useState} from 'react'
 import { Handle, Position } from 'reactflow'
-import { InspectorTabs, useInspectorStore } from '../../pages/Flow/InspectorStore'
+import { useInspectorStore } from '../../pages/Flow/InspectorStore'
+import { TabbedPaneElement } from '../Tabs'
 
 export type BaseModuleProps = {
    label: string,
    content?: React.JSX.Element,
-   tabs?: InspectorTabs,
+   tabs?: TabbedPaneElement,
 }
 
 export default function BaseModule({content, tabs, label} : BaseModuleProps){

@@ -1,3 +1,4 @@
+import Tabs from "../Tabs";
 import BaseModule from "./BaseModule";
 
 
@@ -5,11 +6,14 @@ export default function TerminateCall() {
    return (
       <BaseModule 
          label="Terminate Call"
-         tabs= {{
-            Basic: (
-               <>Basic Tab</>
-            )
-         }}
+         tabs=
+         {
+            <Tabs>
+               <Tabs.Panel name="Terminate Call">
+                  Terminate Call
+               </Tabs.Panel>
+            </Tabs>
+         }
       />
    )
 }
