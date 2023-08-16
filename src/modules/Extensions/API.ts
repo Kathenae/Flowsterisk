@@ -53,7 +53,6 @@ async function list()
    const extensions : ModuleInstance[] = []
 
    if(response.result){
-      console.log(response.result)
       response.result.forEach((e : ExtensionInstance) => {
          const extension : ExtensionInstance = {
             ...e,
