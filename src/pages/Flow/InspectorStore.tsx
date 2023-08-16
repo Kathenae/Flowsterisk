@@ -1,28 +1,45 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { create } from 'zustand'
-import { TabbedPaneElement } from '../../components/Tabs'
-
-export interface InspectorTabs {
-  [key : string] : React.JSX.Element
-}
 
 interface InspectorStore {
   isOpen: boolean
+  content?: React.ReactElement,
   toggle: () => void,
-  setContent: (content: React.JSX.Element) => void,
-  content?: React.JSX.Element,
-  tabs?: TabbedPaneElement,
-  setTabs: (tabs: TabbedPaneElement) => void,
-  clearTabs: () => void,
-  activeTabIndex?: string,
-  setActiveTabIndex: (index : string) => void,
+  open: (content : React.ReactElement) => void,
+  set: (content: React.ReactElement) => void,
+  clear: () => void,
 }
 
 export const useInspectorStore = create<InspectorStore>()((set) => ({
   isOpen: false,
   toggle: () => set((state) => ({isOpen: !state.isOpen})),
-  setContent: (content: React.JSX.Element) => set(() => ({content, isOpen: true})),
-  setTabs: (tabs: TabbedPaneElement) => set(() => ({tabs, isOpen: true})),
-  clearTabs: () => set(() => ({tabs: undefined})),
-  setActiveTabIndex: (index : string) => set(() => ({activeTabIndex: index}))
+  clear: () => set(() => ({content: undefined})),
+  open: (tabs: React.ReactElement) => set(() => ({content: tabs, isOpen: true})),
+  set: (tabs: React.ReactElement) => set(() => ({content: tabs}))
 }))
+
+export const useInspector = (content : React.ReactElement) => {
+  const [active, setActive] = useState(false) // Whether this specific inspector instance is active
+  const toggle = useInspectorStore((state) => state.toggle)
+  const open = useInspectorStore((state) => state.open)
+  const refreshInspector = useInspectorStore((state) => state.set)
+  
+  useEffect(() => {
+     if(content && active) {
+        refreshInspector(content)
+     }
+  }, [content, active, refreshInspector])
+
+  function openInspector(){
+    if(content){
+      open(content)
+      setActive(true)
+    }
+  }
+
+  function toggleInspector(){
+    toggle()
+  }
+
+  return {openInspector, toggleInspector}
+}
