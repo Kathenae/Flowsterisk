@@ -1,14 +1,20 @@
-export type Module = {
-   type: string,
+export type DetailProps<T> =  {
+   module: Module<T>
+}
+
+export type Module<T> = {
+   type?: string,
    label: string,
    iconClass: string,
    API: ModuleAPI,
    List: () => React.JSX.Element,
-   Detail: () => React.JSX.Element,
+   Detail: (props: DetailProps<T>)  => React.JSX.Element,
    Node: () => React.JSX.Element,
+   instance? : T,
 }
+
 export interface ModuleInstance {
-   id: string,
+   id: number,
    type: string,
    label: string,
    destinations: {
