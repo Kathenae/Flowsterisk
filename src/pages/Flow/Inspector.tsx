@@ -4,7 +4,7 @@ import { useInspectorStore } from "./InspectorStore";
 export default function Inspector() {
   const isOpen = useInspectorStore((state) => state.isOpen)
   const toggle = useInspectorStore((state) => state.toggle)
-  const tabs = useInspectorStore((state) => state.tabs)
+  const content = useInspectorStore((state) => state.content)
 
   return (
     <>
@@ -17,7 +17,7 @@ export default function Inspector() {
             <i className='i-carbon-data-1 mr-2' /> Module Settings
           </h1>
         </div>     
-        {tabs}
+        {content}
       </div>
     </>
   )
