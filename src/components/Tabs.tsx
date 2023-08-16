@@ -37,7 +37,7 @@ function Tabs({children} : TabsProp){
         })}
       </div>
 
-      <div className={`mt-2 max-h-[calc(100vh_-_110px)] overflow-auto scrollable px-2`}>
+      <div className={`mt-2 max-h-[calc(100vh_-_110px)] overflow-auto scrollable px-2 pb-16 `}>
         {React.Children.toArray(children)[activeTab]}
       </div>
     </>
