@@ -1,53 +1,33 @@
 import {useEffect, useState} from 'react'
-import { Handle, Position } from 'reactflow'
+import { Handle, NodeProps, Position } from 'reactflow'
 import { useInspectorStore } from '../../pages/Flow/InspectorStore'
-import { TabbedPaneElement } from '../Tabs'
+import modules from '../../modules'
 
-export type BaseModuleProps = {
-   label: string,
-   content?: React.JSX.Element,
-   tabs?: TabbedPaneElement,
-}
-
-export default function BaseModule({content, tabs, label} : BaseModuleProps){
+export default function BaseModule({type, data} : NodeProps){
 
    const [active, setActive] = useState(false)
-   const setInspectorContent = useInspectorStore((state) => state.setContent)
-   const setInspectorActiveTab = useInspectorStore((state) => state.setActiveTabIndex)
-   const setInspectorTabs = useInspectorStore((state) => state.setTabs)
-   const clearInspectorTabs = useInspectorStore((state) => state.clearTabs)
+   const openInspector = useInspectorStore((state) => state.open)
+   const refreshInspector = useInspectorStore((state) => state.set)
+   const clearInspector = useInspectorStore((state) => state.clear)
+   const module = modules[type]
+   const details = module.Detail()
 
    // Detect when content change and re-render
    useEffect(() => {
-      if(content && active){
-         setInspectorContent(content)
+      if(details && active){
+         refreshInspector(details)
       }
-   }, [content, setInspectorContent, active])
-
-   useEffect(() => {
-      if(tabs && active){
-         setInspectorTabs(tabs)
-      }
-   }, [tabs, setInspectorTabs, active])
+   }, [details, refreshInspector, active])
    
    const handleOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       event.preventDefault()
 
-      if(content){
-         setInspectorContent(content)
+      if(module.Detail){
+         openInspector(module.Detail())
          setActive(true)
       }
       else{
-         setInspectorContent(<></>)
-      }
-
-      if(tabs){
-         setInspectorActiveTab(Object.keys(tabs)[0])
-         setInspectorTabs(tabs)
-         setActive(true)
-      }
-      else{
-         clearInspectorTabs()
+         clearInspector()
       }
    }
 
@@ -59,7 +39,7 @@ export default function BaseModule({content, tabs, label} : BaseModuleProps){
          className={className}
          onClick={handleOnClick}
       >
-         <h1>{label}</h1>
+         <h1>{data.label}</h1>
          <Handle id='1' type='source' position={Position.Right} />
          <Handle id='2' type='target' position={Position.Left} />
       </button>
