@@ -1,3 +1,5 @@
+import { NodeProps } from "reactflow"
+
 export type DetailProps<T> =  {
    module: Module<T>
 }
@@ -9,7 +11,7 @@ export type Module<T> = {
    API: ModuleAPI,
    List: () => React.JSX.Element,
    Detail: (props: DetailProps<T>)  => React.JSX.Element,
-   Node: () => React.JSX.Element,
+   Node?: (props: NodeProps) => React.JSX.Element,
    instance? : T,
 }
 

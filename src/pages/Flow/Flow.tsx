@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react'
-import ReactFlow, { Background, Controls, Edge, EdgeChange, Node, NodeChange, ReactFlowInstance, applyEdgeChanges, applyNodeChanges } from 'reactflow'
+import ReactFlow, { Background, Controls, Edge, EdgeChange, Node, NodeChange, NodeProps, ReactFlowInstance, applyEdgeChanges, applyNodeChanges } from 'reactflow'
 import 'reactflow/dist/style.css'
 import TopMenu from './TopMenu'
 import Inspector from './Inspector'
 import ModulePicker from './ModulePicker'
 import { Module } from '../../modules/types'
 import modules from '../../modules'
+import BaseNode from '../../components/BaseNode'
 
 export enum ModuleType {
   InboundRoute = "Inbound Route",
@@ -21,12 +22,12 @@ export enum ModuleType {
 }
 
 const nodeTypes = {} as {
-  [key: string] : () => React.JSX.Element
+  [key: string] : (props: NodeProps) => React.JSX.Element
 }
 
 Object.values(modules).forEach((module) => {
   if(module.type){
-    nodeTypes[module.type] = module.Node
+    nodeTypes[module.type] = module.Node ?? BaseNode
   }
 })
 
