@@ -29,8 +29,8 @@ export function ModuleList({children, onFilter} : PropsWithChildren<{onFilter: (
   )
 }
 
-export function ModuleItem({ className, onClick, label, module }: PropsWithChildren<{ className?: string, onClick : () => void, label?: string, module: Module}>) {
-  
+export function ModuleItem<T>({ className, onClick, label, module }: PropsWithChildren<{ className?: string, onClick : () => void, label?: string, module: Module<T> }>) {
+
   const onDragStart = (event : React.DragEvent<HTMLButtonElement>) => {
     event.dataTransfer.setData("module", JSON.stringify(module));
   }
@@ -49,7 +49,7 @@ export function ModuleItem({ className, onClick, label, module }: PropsWithChild
 export default function ModulePicker() {
   const toggle = useModulePickerState((state) => state.toggle)
   const isOpen = useModulePickerState((state) => state.isOpen)
-  const [activeModule, setActiveModule] = useState<Module | null>()
+  const [activeModule, setActiveModule] = useState<Module<unknown> | null>()
   const [filteredModules, setFilteredModules] = useState(Object.values(modules)) 
 
   const handleOnFilter = (filter : string) => {
