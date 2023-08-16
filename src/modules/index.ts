@@ -1,17 +1,19 @@
-import ExampleModule from "./ExampleModule"
-import { ModuleAPI } from "./types"
+import { Module } from "./types"
 
-type ModuleDefs = {
-   [key : string] : {
-      API: ModuleAPI,
-      List: () => React.JSX.Element,
-      Detail: () => React.JSX.Element,
-      Node: () => React.JSX.Element,
-   }
+const modules = {}  as {
+   [key : string] : Module
 }
 
-export default 
-{
-   ExampleModule,
+const imports = import.meta.glob('./*/index.tsx', {eager: true})
+for (const path in imports){
+   const { default : module } = (await imports[path]) as { default : Module }
 
-} as ModuleDefs
+   // Make the name of the module directory be the name of its type
+   const moduleName = path.split("/")[1]
+   module.type = moduleName
+
+   // Map the modules to list of modules
+   modules[module.type] = module 
+}
+
+export default modules

@@ -1,13 +1,18 @@
-export interface ListProps {
-   filter: string,
+export type Module = {
+   type: string,
+   label: string,
+   iconClass: string,
+   API: ModuleAPI,
+   List: () => React.JSX.Element,
+   Detail: () => React.JSX.Element,
+   Node: () => React.JSX.Element,
 }
-
-export interface Module {
+export interface ModuleInstance {
    id: string,
    type: string,
    label: string,
    destinations: {
-      [key: string] : Module
+      [key: string] : ModuleInstance
    },
    [key : string] : unknown
 }

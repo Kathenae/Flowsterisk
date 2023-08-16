@@ -1,19 +1,20 @@
 import { PropsWithChildren } from 'react'
 import Button from '../../components/Button';
 import { useModulePickerState } from './modulePickerStore';
-import { ModuleType } from './Flow';
+import { Module } from '../../modules/types';
+import modules from '../../modules';
 
-function ModuleItem({ className, text, icon, moduleType }: PropsWithChildren<{ className?: string, text: string, icon: string, moduleType: ModuleType}>) {
+function ModuleItem({ className, module }: PropsWithChildren<{ className?: string, module: Module}>) {
   
   const onDragStart = (event : React.DragEvent<HTMLButtonElement>) => {
-    event.dataTransfer.setData("moduleType", moduleType);
+    event.dataTransfer.setData("module", JSON.stringify(module));
   }
   
   return (
     <Button onDragStart={onDragStart} draggable className={`min-w-fit text-sm text-center ${className}`}>
-      <i className={`${icon} text-2xl`} />
+      <i className={`${module.iconClass} text-2xl`} />
       <p>
-        {text}
+        {module.label}
       </p>
     </Button>
   )
@@ -45,16 +46,12 @@ export default function ModulePicker() {
         </div>
 
         <div className='grid grid-cols-2 space px-4 mt-4 max-h-[77%] overflow-y-auto scrollable mx-1'>
-          <ModuleItem moduleType={ModuleType.InboundRoute} className='mb-4 mx-1 h-24' text="Inbound Route" icon="i-carbon-model-builder" />
-          <ModuleItem moduleType={ModuleType.TerminateCall} className='mb-4 mx-1 h-24' text="Terminate Call" icon="i-carbon-phone-off" />
-          <ModuleItem moduleType={ModuleType.Announcements} className='mb-4 mx-1 h-24' text="Announcements" icon="i-carbon-user-speaker" />
-          <ModuleItem moduleType={ModuleType.InteractiveVoiceResponse} className='mb-4 mx-1 h-24' text="Interactive Voice Response" icon="i-carbon-model-builder" />
-          <ModuleItem moduleType={ModuleType.Holidays} className='mb-4 mx-1 h-24' text="Holidays" icon="i-carbon-calendar" />
-          <ModuleItem moduleType={ModuleType.Extension} className='mb-4 mx-1 h-24' text="Extension" icon="i-carbon-user" />
-          <ModuleItem moduleType={ModuleType.DynamicDestination} className='mb-4 mx-1 h-24' text="Dynamic Destination" icon="i-carbon-flow-data" />
-          <ModuleItem moduleType={ModuleType.CustomContext} className='mb-4 mx-1 h-24' text="Custom Context" icon="i-carbon-script" />
-          <ModuleItem moduleType={ModuleType.CustomApplication} className='mb-4 mx-1 h-24' text="Custom Application" icon="i-carbon-phone-application" />
-          <ModuleItem moduleType={ModuleType.Trunks} className='mb-4 mx-1 h-24' text="Trunks" icon="i-carbon-phone-ip" />
+          {Object.keys(modules).map((moduleType) => {
+            const module = modules[moduleType]
+            return (
+              <ModuleItem key={moduleType} module={module} className='mb-4 mx-1 h-24' />
+            )
+          })}
         </div>
 
       </div>

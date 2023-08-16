@@ -4,6 +4,6 @@ import BaseModule from "../../components/Modules/BaseModule";
 
 export default function Node() {
    return (
-      <BaseModule label="Announcement" />
+      <BaseModule label="Example Module" />
    )
 }
