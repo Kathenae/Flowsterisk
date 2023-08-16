@@ -3,10 +3,11 @@ import { useEffect, useRef, useState } from 'react'
 interface AccordionProps {
    label: string
    className?: string
+   collapsed?: boolean
 }
 
-export default function Accordion({ label, className, children }: React.PropsWithChildren<AccordionProps>) {
-   const [isCollapsed, setCollapsed] = useState(true)
+export default function Accordion({ label, className, collapsed, children }: React.PropsWithChildren<AccordionProps>) {
+   const [isCollapsed, setCollapsed] = useState(collapsed)
    const contentRef = useRef<HTMLDivElement>(null)
    const containerRef = useRef<HTMLDivElement>(null)
 
