@@ -3,8 +3,9 @@
 import { useState } from "react";
 import Button from "../../components/Button";
 import Tabs from "../../components/Tabs";
+import { DetailProps } from "../types";
 
-export default function Detail(){
+export default function Detail(props : DetailProps<unknown>){
    const [basic, setBasic] = useState(0)
    const [advanced, setAdvanced] = useState(0)
    const [extra, setExtra] = useState(0)
@@ -12,7 +13,7 @@ export default function Detail(){
    return (
    <Tabs>
       <Tabs.Panel name='Basic'>
-         <h1>Basic Settings</h1>
+         <h1>{props.module.label} Settings</h1>
          <Button className='mt-2' primary onClick={() => setBasic(basic + 1)}>Increment {basic}</Button>
       </Tabs.Panel>
       <Tabs.Panel name="Advanced">

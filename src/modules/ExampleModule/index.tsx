@@ -11,4 +11,4 @@ export default {
    Node,
    Detail,
    API
-} as Module
+} as Module<unknown>
