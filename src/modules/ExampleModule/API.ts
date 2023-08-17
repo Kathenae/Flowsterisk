@@ -1,21 +1,27 @@
 // API endpoints for module CRUD Operations
 
-async function list()
+import { ModuleInstance } from "../types"
+
+export type ExampleInstance = ModuleInstance & {
+   // DB attributes and destinations go here go here
+}
+
+async function list() : Promise<ExampleInstance[]> 
 {
    console.log("List Example")
 
    return [
-      {id: 1, label: "Item 1"},
-      {id: 2, label: "Item 2"},
-      {id: 3, label: "Item 3"},
-      {id: 4, label: "Item 4"},
-      {id: 5, label: "Item 5"},
-      {id: 6, label: "Item 6"},
-      {id: 7, label: "Item 7"},
-      {id: 8, label: "Item 8"},
-      {id: 9, label: "Item 9"},
-      {id: 10, label: "Item 10"},
-   ] as unknown[] 
+      {type: "ExampleModule", destinations: {}, id: 1, label: "Item 1"},
+      {type: "ExampleModule", destinations: {}, id: 2, label: "Item 2"},
+      {type: "ExampleModule", destinations: {}, id: 3, label: "Item 3"},
+      {type: "ExampleModule", destinations: {}, id: 4, label: "Item 4"},
+      {type: "ExampleModule", destinations: {}, id: 5, label: "Item 5"},
+      {type: "ExampleModule", destinations: {}, id: 6, label: "Item 6"},
+      {type: "ExampleModule", destinations: {}, id: 7, label: "Item 7"},
+      {type: "ExampleModule", destinations: {}, id: 8, label: "Item 8"},
+      {type: "ExampleModule", destinations: {}, id: 9, label: "Item 9"},
+      {type: "ExampleModule", destinations: {}, id: 10, label: "Item 10"},
+   ] 
 }
 
 async function get(id : number)

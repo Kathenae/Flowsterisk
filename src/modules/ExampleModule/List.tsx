@@ -1,20 +1,21 @@
 // Component that will be used to show the list of specific modules instances on the module picker
 import { useState, useEffect } from 'react'
-import API from './API'
+import API, { ExampleInstance } from './API'
 import { ModuleItem, ModuleList } from '../../pages/Flow/ModulePicker'
 import modules from '..'
 import { useInspectorStore } from '../../pages/Flow/InspectorStore'
+import { Module } from '../types'
 
 export default function List(){
 
-   const [items, setItems] = useState<{label : string, id : number}[]>([])
-   const [filteredItems, setFilteredItems] = useState<{label : string, id : number}[]>([])
-   const module = modules["ExampleModule"]
+   const [items, setItems] = useState<ExampleInstance[]>([])
+   const [filteredItems, setFilteredItems] = useState<ExampleInstance[]>([])
+   const module = modules["ExampleModule"] as Module<ExampleInstance>
    const openInspector = useInspectorStore((state) => state.open)
 
    useEffect(() => {
       async function fetch(){
-         const foundItems = (await API.list()) as {label : string, id: number}[]
+         const foundItems = await API.list()
          setItems(foundItems)
          setFilteredItems(foundItems)
       }
@@ -32,9 +33,9 @@ export default function List(){
          {filteredItems.map(item => (
             <ModuleItem 
                key={item.id}
-               onClick={() => openInspector(<module.Detail key={item.id} />)}
+               onClick={() => openInspector(<module.Detail key={item.id} module={{...module, instance: item}}/>)}
                label={item.label} 
-               module={module} 
+               module={{...module, instance: item}}
             />
          ))}
       </ModuleList>
