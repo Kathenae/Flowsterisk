@@ -1,6 +1,6 @@
 import { Handle, NodeProps, Position } from 'reactflow'
 import { useInspector } from '../pages/Flow/InspectorStore'
-import { Module, ModuleInstance } from '../modules/types'
+import { Module, ModuleInstance } from './types'
 
 export default function BaseNode({ data, id} : NodeProps){
 

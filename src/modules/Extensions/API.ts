@@ -47,18 +47,18 @@ export interface ExtensionInstance extends ModuleInstance {
    tenant_id: number
 }
 
-async function list()
+async function list() : Promise<ExtensionInstance[]>
 {
    const response = await api.get('api.php?list_table=ombu_extensions&no_destination=true&tenant=true')
-   const extensions : ModuleInstance[] = []
+   const extensions : ExtensionInstance[] = []
 
    if(response.result){
-      response.result.forEach((e : ExtensionInstance) => {
+      response.result.forEach((entry : ExtensionInstance) => {
          const extension : ExtensionInstance = {
-            ...e,
+            ...entry,
             type: "Extensions",
-            id: e.extension_id,
-            label: e.name,
+            id: entry.extension_id,
+            label: entry.name,
             destinations: {},
          }
 
@@ -69,19 +69,19 @@ async function list()
    return extensions
 }
 
-async function get(id : number)
+async function get(id : number) : Promise<ExtensionInstance | null>
 {
    console.log("Get Example: ", id)
-   
-   return {id: 1, label: "Item 1"}
+
+   return null;
 }
 
-async function post(module : unknown)
+async function post(module : ExtensionInstance)
 {
    console.log("Post Example: ", module)
 }
 
-async function put(module : unknown)
+async function put(module : ExtensionInstance)
 {
    console.log("Put Example: ", module)
 }

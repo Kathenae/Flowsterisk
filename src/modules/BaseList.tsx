@@ -1,27 +1,28 @@
 // Component that will be used to show the list of specific modules instances on the module picker
 import { useState, useEffect } from 'react'
-import API from './API'
-import { ModuleItem, ModuleList } from '../../pages/Flow/ModulePicker'
-import modules from '..'
-import { useInspectorStore } from '../../pages/Flow/InspectorStore'
-import { Module, ModuleInstance } from '../types'
+import { Module, ModuleInstance } from './types'
+import { useInspectorStore } from '../pages/Flow/InspectorStore'
+import { ModuleItem, ModuleList } from '../pages/Flow/ModulePicker'
 
-export default function List(){
+type BaseListProps = {
+   module : Module<ModuleInstance>
+}
+
+export default function BaseList({module} : BaseListProps){
 
    const [items, setItems] = useState<ModuleInstance[]>([])
    const [filteredItems, setFilteredItems] = useState<ModuleInstance[]>([])
-   const module = modules["Extensions"] as Module<ModuleInstance>
    const openInspector = useInspectorStore((state) => state.open)
 
    useEffect(() => {
       async function fetch(){
-         const foundItems = await API.list()
+         const foundItems = await module.API.list()
          setItems(foundItems)
          setFilteredItems(foundItems)
       }
 
       fetch()
-   }, [])
+   }, [module.API])
 
    const handleOnFilter = (filter : string) => {
       setFilteredItems(items.filter(item => !!item.label.toLowerCase().match(filter)))

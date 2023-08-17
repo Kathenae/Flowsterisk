@@ -1,7 +1,7 @@
 import List from "./List"
 import Detail from "./Detail"
 import Node from "./Node"
-import API from "./API"
+import API, { ExampleInstance } from "./API"
 import { Module } from "../types"
 
 export default {
@@ -11,4 +11,4 @@ export default {
    Node,
    Detail,
    API
-} as Module<unknown>
+} as Module<ExampleInstance>

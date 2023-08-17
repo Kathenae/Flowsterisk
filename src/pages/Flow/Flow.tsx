@@ -4,9 +4,8 @@ import 'reactflow/dist/style.css'
 import TopMenu from './TopMenu'
 import Inspector from './Inspector'
 import ModulePicker from './ModulePicker'
-import { Module } from '../../modules/types'
+import { Module, ModuleInstance } from '../../modules/types'
 import modules from '../../modules'
-import BaseNode from '../../components/BaseNode'
 
 export enum ModuleType {
   InboundRoute = "Inbound Route",
@@ -26,8 +25,8 @@ const nodeTypes = {} as {
 }
 
 Object.values(modules).forEach((module) => {
-  if(module.type){
-    nodeTypes[module.type] = module.Node ?? BaseNode
+  if(module.type && module.Node){
+    nodeTypes[module.type] = module.Node
   }
 })
 
@@ -53,7 +52,7 @@ export default function Flow() {
 
   const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
-    let module = JSON.parse(event.dataTransfer.getData("module")) as Module<unknown>
+    let module = JSON.parse(event.dataTransfer.getData("module")) as Module<ModuleInstance>
     
     if (flowInstanse && module && module.type) {
 

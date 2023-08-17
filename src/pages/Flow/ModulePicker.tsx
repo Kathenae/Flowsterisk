@@ -1,7 +1,7 @@
 import { PropsWithChildren, useState } from 'react'
 import Button from '../../components/Button'
 import { useModulePickerState } from './modulePickerStore'
-import { Module } from '../../modules/types'
+import { Module, ModuleInstance } from '../../modules/types'
 import modules from '../../modules';
 
 export function ModuleList({children, onFilter} : PropsWithChildren<{onFilter: (filter : string) => void}>) {
@@ -29,7 +29,14 @@ export function ModuleList({children, onFilter} : PropsWithChildren<{onFilter: (
   )
 }
 
-export function ModuleItem<T>({ className, onClick, label, module }: PropsWithChildren<{ className?: string, onClick : () => void, label?: string, module: Module<T> }>) {
+type ModuleItemProps<T extends ModuleInstance> = { 
+  className?: string, 
+  onClick : () => void, 
+  label?: string, 
+  module: Module<T> 
+}
+
+export function ModuleItem<T extends ModuleInstance>({ className, onClick, label, module }: PropsWithChildren<ModuleItemProps<T>>) {
 
   const onDragStart = (event : React.DragEvent<HTMLButtonElement>) => {
     event.dataTransfer.setData("module", JSON.stringify(module));
@@ -49,7 +56,7 @@ export function ModuleItem<T>({ className, onClick, label, module }: PropsWithCh
 export default function ModulePicker() {
   const toggle = useModulePickerState((state) => state.toggle)
   const isOpen = useModulePickerState((state) => state.isOpen)
-  const [activeModule, setActiveModule] = useState<Module<unknown> | null>()
+  const [activeModule, setActiveModule] = useState<Module<ModuleInstance> | null>()
   const [filteredModules, setFilteredModules] = useState(Object.values(modules)) 
 
   const handleOnFilter = (filter : string) => {
@@ -89,8 +96,8 @@ export default function ModulePicker() {
           </>
         }
 
-          {activeModule &&
-            <activeModule.List />
+          {activeModule?.List &&
+            <activeModule.List module={activeModule} />
           }
       </div>
     </div>

@@ -1,18 +1,28 @@
-import { Module } from "./types"
+import BaseList from "./BaseList"
+import BaseNode from "./BaseNode"
+import { Module, ModuleInstance } from "./types"
 
 const modules = {}  as {
-   [key : string] : Module<unknown>
+   [key : string] : Module<ModuleInstance>
 }
 
 const imports = import.meta.glob('./*/index.tsx', {eager: true})
 for (const path in imports){
-   const { default : module } = (await imports[path]) as { default : Module<unknown> }
+   const { default : module } = (await imports[path]) as { default : Module<ModuleInstance> }
 
-   // Make the name of the module directory be the name of its type
-   const moduleName = path.split("/")[1]
-   module.type = moduleName
+   // module type will be derived from the path
+   module.type = path.split("/")[1]
 
-   // Map the modules to list of modules
+   // use BaseNode if module does not define a Node component
+   if(!module.Node){
+      module.Node = BaseNode
+   }
+
+   // use BaseList if module does not define a List component
+   if(!module.List){
+      module.List = BaseList
+   }
+
    modules[module.type] = module 
 }
 

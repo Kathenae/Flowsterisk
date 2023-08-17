@@ -24,19 +24,19 @@ async function list() : Promise<ExampleInstance[]>
    ] 
 }
 
-async function get(id : number)
+async function get(id : number) : Promise<ExampleInstance | null>
 {
    console.log("Get Example: ", id)
    
-   return {id: 1, label: "Item 1"}
+   return null;
 }
 
-async function post(module : unknown)
+async function post(module : ExampleInstance)
 {
    console.log("Post Example: ", module)
 }
 
-async function put(module : unknown)
+async function put(module : ExampleInstance)
 {
    console.log("Put Example: ", module)
 }
