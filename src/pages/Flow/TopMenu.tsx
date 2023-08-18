@@ -1,4 +1,5 @@
 import Button from '../../components/Button'
+import DarkModeToggle from '../../components/DarkModeToggle';
 import { useInspectorStore } from './InspectorStore';
 import { useModulePickerState } from './modulePickerStore';
 
@@ -26,6 +27,7 @@ export default function TopMenu() {
           </div>
 
           <div className='ml-auto'>
+            <DarkModeToggle />
             <Button  className='ml-2 w-10 h-10'>
               <i className='i-carbon-user' />
             </Button>
