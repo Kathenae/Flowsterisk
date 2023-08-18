@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react'
-import ReactFlow, { Background, Connection, Controls, Edge, EdgeChange, Node, NodeChange, NodeProps, ReactFlowInstance, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow'
+import ReactFlow, { Background, Connection, Edge, EdgeChange, Node, NodeChange, NodeProps, ReactFlowInstance, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow'
 import 'reactflow/dist/style.css'
 import TopMenu from './TopMenu'
 import Inspector from './Inspector'
 import ModulePicker from './ModulePicker'
 import { Module, ModuleInstance } from '../../modules/types'
 import modules from '../../modules'
+import Controls from './Controls'
 
 const nodeTypes = {} as {
   [key: string] : (props: NodeProps) => React.JSX.Element
@@ -82,7 +83,7 @@ export default function Flow() {
         proOptions={{hideAttribution: true}}
       >
         <Background />
-        <Controls className='flex dark:border-dark-100 rounded-sm !dark:bg-dark-400' position='bottom-left' />
+        <Controls />
       </ReactFlow>
       <TopMenu />
       <ModulePicker />
