@@ -30,14 +30,14 @@ export default function Controls(){
 
   return (
      <Panel position='bottom-left' className='flex'>
-        <Button className='h-8 !py-0 dark:border-dark-100 mr-2' onClick={handleFit}><i className='i-carbon-center-square' /></Button>
-        <Button className='h-8 !py-0 dark:border-dark-100 border-r-none rounded-r-none' onClick={handleZoomOut}><i className='i-carbon-subtract' /></Button>
-        <Button className='h-8 !py-0 dark:border-dark-100 w-16 rounded-none' onClick={handleFit}>{Math.round(zoomPercent * 100) + "%"}</Button>
-        <Button className='h-8 !py-0 dark:border-dark-100 border-l-none rounded-l-none' onClick={handleZoomIn}><i className='i-carbon-add' /></Button>
+        <Button className='h-8 !py-0 mr-2' onClick={handleFit}><i className='i-carbon-center-square' /></Button>
+        <Button className='h-8 !py-0 border-r-none rounded-r-none' onClick={handleZoomOut}><i className='i-carbon-subtract' /></Button>
+        <Button className='h-8 !py-0 w-16 rounded-none' onClick={handleFit}>{Math.round(zoomPercent * 100) + "%"}</Button>
+        <Button className='h-8 !py-0 border-l-none rounded-l-none' onClick={handleZoomIn}><i className='i-carbon-add' /></Button>
 
         <div className='ml-2'>
-           <Button className='h-8 !py-0 dark:border-dark-100 border-r-none rounded-r-none' onClick={() => zoomOut({ duration: 100 })}><i className='i-carbon-undo' /></Button>
-           <Button className='h-8 !py-0 dark:border-dark-100 rounded-l-none' onClick={() => zoomOut({ duration: 100 })}><i className='i-carbon-redo' /></Button>
+           <Button className='h-8 !py-0 border-r-none rounded-r-none' onClick={() => zoomOut({ duration: 100 })}><i className='i-carbon-undo' /></Button>
+           <Button className='h-8 !py-0 rounded-l-none' onClick={() => zoomOut({ duration: 100 })}><i className='i-carbon-redo' /></Button>
         </div>
      </Panel>
   )
