@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import ReactFlow, { Background, Controls, Edge, EdgeChange, Node, NodeChange, NodeProps, ReactFlowInstance, applyEdgeChanges, applyNodeChanges } from 'reactflow'
+import ReactFlow, { Background, Connection, Controls, Edge, EdgeChange, Node, NodeChange, NodeProps, ReactFlowInstance, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow'
 import 'reactflow/dist/style.css'
 import TopMenu from './TopMenu'
 import Inspector from './Inspector'
@@ -65,6 +65,7 @@ export default function Flow() {
 
   const onNodeChange = useCallback((changes : NodeChange[]) => setNodes((nds) => applyNodeChanges(changes, nds)), [])
   const onEdgeChange = useCallback((changes : EdgeChange[]) => setEdges((eds) => applyEdgeChanges(changes, eds)), [])
+  const onConnect = useCallback((connection: Connection) => setEdges((eds) => addEdge(connection, eds)), [setEdges]);
 
   return (
     <div className='w-screen h-screen overflow-hidden dark:bg-dark-400'>
@@ -75,6 +76,7 @@ export default function Flow() {
         edges={edges}
         onNodesChange={onNodeChange}
         onEdgesChange={onEdgeChange}
+        onConnect={onConnect}
         onDragOver={onDragOver}
         onDrop={onDrop}
         proOptions={{hideAttribution: true}}
