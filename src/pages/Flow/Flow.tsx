@@ -77,6 +77,7 @@ export default function Flow() {
         onEdgesChange={onEdgeChange}
         onDragOver={onDragOver}
         onDrop={onDrop}
+        proOptions={{hideAttribution: true}}
       >
         <Background />
         <Controls className='flex dark:border-dark-100 rounded-sm !dark:bg-dark-400' position='bottom-left' />
