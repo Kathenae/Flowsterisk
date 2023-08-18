@@ -7,19 +7,6 @@ import ModulePicker from './ModulePicker'
 import { Module, ModuleInstance } from '../../modules/types'
 import modules from '../../modules'
 
-export enum ModuleType {
-  InboundRoute = "Inbound Route",
-  TerminateCall = "Terminate Call",
-  Announcements = "Announcements",
-  InteractiveVoiceResponse = "Interactive Voice Response",
-  Extension = "Extension",
-  Holidays = "Holidays",
-  DynamicDestination = "Dynamic Destination",
-  CustomContext = "Custom Context",
-  CustomApplication = "Custom Application",
-  Trunks = "Trunks"
-}
-
 const nodeTypes = {} as {
   [key: string] : (props: NodeProps) => React.JSX.Element
 }
