@@ -29,7 +29,7 @@ function Tabs({children} : TabsProp){
             <button
               key={index}
               onClick={() => handleTabClick(index)}
-              className={`py-2 px-4 bg-transparent font-semibold ${index === activeTab && 'border-b-6 border-green-500'}`}
+              className={`py-2 px-4 bg-transparent font-semibold ${index === activeTab && 'border-b-6 border-brand-500'}`}
             >
               {tab.props.name}
             </button>

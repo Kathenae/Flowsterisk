@@ -26,7 +26,7 @@ export default function TopMenu() {
           </div>
 
           <div className='ml-auto'>
-            <Button className='ml-2 p-2 !bg-green-100 !border-green-100 !hover:bg-green-300 w-10 h-10'>
+            <Button className='ml-2 p-2 !bg-brand-100 !border-brand-100 !hover:bg-brand-300 w-10 h-10'>
               <i className='i-carbon-user' />
             </Button>
             <Button className='ml-2 w-10 h-10' onClick={toggleModuleSettings}>

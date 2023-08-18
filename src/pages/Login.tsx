@@ -5,8 +5,8 @@ export default function Login() {
    return (
       <div className='w-screen h-screen overflow-hidden flex items-center justify-center'>
          <div className="p-6 shadow-lg rounded-lg border-1 w-lg">
-            <div className="pb-4 mb-4 border-b-4 border-green-500 text-center ">
-               <h1 className="font-bold text-4xl mb-4 text-gray-600">PBX<span className="text-green-400">Flow</span></h1>
+            <div className="pb-4 mb-4 border-b-4 border-brand-400 text-center ">
+               <h1 className="font-bold text-4xl mb-4 text-gray-600">PBX<span className="text-brand-400">Flow</span></h1>
                <p className="text-gray-400 text-sm">Welcome to PBXFlow, please login using your VitalPBX Credentials</p>
             </div>
 
