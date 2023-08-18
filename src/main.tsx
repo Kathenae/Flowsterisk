@@ -5,9 +5,12 @@ import { RouterProvider } from "react-router-dom";
 import './index.css'
 import 'virtual:uno.css'
 import router from './routes.tsx'
+import { ReactFlowProvider } from 'reactflow';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ReactFlowProvider>
+      <RouterProvider router={router} />
+    </ReactFlowProvider>
   </React.StrictMode>,
 )
