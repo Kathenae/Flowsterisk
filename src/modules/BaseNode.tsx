@@ -12,7 +12,7 @@ export default function BaseNode({ data, id} : NodeProps){
       openInspector()
    }
 
-   const className = `bg-white border-1 cursor-pointer hover:border-brand-700 focus:border-brand-500 focus:text-brand-500 hover:text-brand-700 
+   const className = `bg-white dark:bg-dark-400 dark:text-gray-100 border-1 dark:border-dark-100 cursor-pointer hover:border-brand-700 focus:border-brand-500 focus:text-brand-500 hover:text-brand-700 
    rounded border-black shadow-lg w-38 h-42 text-center overflow-hidden flex flex-col items-center group`
 
    return (
@@ -20,7 +20,7 @@ export default function BaseNode({ data, id} : NodeProps){
          className={className}
          onClick={handleOnClick}
       >
-         <div className='w-full p-2 flex items-center justify-center border-b border-black group-focus:border-brand-500 group-hover:border-brand-700'>
+         <div className='w-full p-2 flex items-center justify-center border-b border-black dark:border-dark-100 group-focus:border-brand-500 group-hover:border-brand-700'>
             <h1 className='whitespace-nowrap font-medium'>{module.label}</h1>
          </div>
          <div className='mt-4'>

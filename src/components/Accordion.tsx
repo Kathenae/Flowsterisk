@@ -24,11 +24,11 @@ export default function Accordion({ label, className, collapsed, children }: Rea
 
    return (
       <>
-         <button className={`w-full py-2 text-left bg-white font-semibold hover:bg-light-200 flex border-t-1 ${className}`} onClick={toggle}>
+         <button className={`w-full py-2 text-left bg-white dark:bg-dark-400 font-semibold hover:bg-light-200 dark:hover:bg-dark-200 flex border-t-1 dark:border-dark-100 ${className}`} onClick={toggle}>
             <i className={`text-2xl mr-1 i-carbon-caret-right transition-transform duration-300 ${!isCollapsed && "rotate-90"}`} />
             {label}
          </button>
-         <div ref={contentRef} className={`w-full overflow-hidden duration-300 border-b-1 ${isCollapsed? "p-0" : "p-4"}`}>
+         <div ref={contentRef} className={`w-full overflow-hidden duration-300 border-b-1 dark:border-dark-100 ${isCollapsed? "p-0" : "p-4"}`}>
             <div ref={containerRef} className='w-full'>
                {children}
             </div>

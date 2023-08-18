@@ -27,7 +27,9 @@ export default defineConfig({
     }
   },
   presets: [
-    presetUno(),
+    presetUno({
+      dark: 'media'
+    }),
     presetAttributify(),
     presetIcons({
       extraProperties: {

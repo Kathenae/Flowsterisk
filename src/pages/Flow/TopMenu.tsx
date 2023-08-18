@@ -8,7 +8,7 @@ export default function TopMenu() {
   const toggleModulePicker = useModulePickerState((state) => state.toggle);
 
   return (
-    <div className='absolute top-0 py-2 z-10 w-full'>
+    <div className='absolute top-0 py-2 z-10 w-full !dark:text-gray-100'>
       <div className='relative'>
         <div className='flex relative items-center px-4'>
           <div className='flex overflow-x-hidden space-x-2 scrollable px-2 rounded-md'>
@@ -26,7 +26,7 @@ export default function TopMenu() {
           </div>
 
           <div className='ml-auto'>
-            <Button className='ml-2 p-2 !bg-brand-100 !border-brand-100 !hover:bg-brand-300 w-10 h-10'>
+            <Button  className='ml-2 w-10 h-10'>
               <i className='i-carbon-user' />
             </Button>
             <Button className='ml-2 w-10 h-10' onClick={toggleModuleSettings}>

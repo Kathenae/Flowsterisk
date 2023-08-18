@@ -15,14 +15,14 @@ export function ModuleList({children, onFilter} : PropsWithChildren<{onFilter: (
 
   return (
     <>
-      <div className='px-4 mt-4'>
+      <div className='px-4 mt-4 !dark:text-gray-100'>
         <div className='relative'>
-          <input value={filter} onChange={(event) => handleOnChange(event.target.value)} placeholder='Filter Modules' className='w-full px-2 py-1 border-2 border-gray-200 rounded-md focus:outline-none' type="text" />
+          <input value={filter} onChange={(event) => handleOnChange(event.target.value)} placeholder='Filter Modules' className='w-full px-2 py-1 border-2 border-gray-200 dark:border-dark-100 dark:bg-dark-400 rounded-md focus:outline-none' type="text" />
           <i className='i-carbon-search text-gray-400 absolute top-2.5 right-2' />
         </div>
       </div>
 
-      <div className='grid grid-cols-1 gap-2 px-4 mt-4 max-h-[77%] overflow-y-auto scrollable mx-1'>
+      <div className='grid grid-cols-1 gap-2 px-4 mt-4 max-h-[77%] overflow-y-auto scrollable mx-1 !dark:text-gray-100'>
         {children}
       </div>
     </>
@@ -66,23 +66,23 @@ export default function ModulePicker() {
 
   return (
     <div className={`absolute top-0 h-full flex z-10 items-center pointer-events-none transition-all duration-300 ${isOpen? 'left-4' : '-left-100'}`}>
-      <div className={`bg-white rounded-2xl border-gray-300 border shadow-lg h-150 w-80 pointer-events-auto`}>
+      <div className={`bg-white dark:bg-dark-400 !dark:text-gray-100 rounded-2xl border-gray-300 dark:border-dark-100 border shadow-lg h-150 w-80 pointer-events-auto`}>
 
         <div className='relative text-left pl-10'>
           {activeModule ?
-            <Button className='min-w-fit absolute -top-1 left-4 !p-1 border-none' onClick={() => setActiveModule(null)}>
+            <Button className='min-w-fit absolute -top-1 left-4 !p-1 border-none dark:bg-dark-400 dark:hover:bg-dark-100' onClick={() => setActiveModule(null)}>
               <i className='i-carbon-arrow-left text-2xl border-none' />
             </Button> 
             :
             <i className='i-carbon-application text-2xl absolute top-0 left-4 !p-1 border-none' /> 
           }
           <h1 className='px-4 mt-4 text-lg font-semibold'>{activeModule?.label ?? 'Modules'}</h1>
-          <Button className='min-w-fit absolute -top-1 right-4 !p-1 border-none' onClick={toggle}>
+          <Button className='min-w-fit absolute -top-1 right-4 !p-1 border-none dark:bg-dark-400 dark:hover:bg-dark-100' onClick={toggle}>
             <i className='i-carbon-close text-2xl' />
           </Button>
         </div>
 
-        <hr className='mt-2' />
+        <hr className='mt-2 dark:border-dark-100' />
 
         {!activeModule &&
           <>

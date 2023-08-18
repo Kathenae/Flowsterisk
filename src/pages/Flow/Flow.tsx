@@ -67,7 +67,7 @@ export default function Flow() {
   const onEdgeChange = useCallback((changes : EdgeChange[]) => setEdges((eds) => applyEdgeChanges(changes, eds)), [])
 
   return (
-    <div className='w-screen h-screen overflow-hidden'>
+    <div className='w-screen h-screen overflow-hidden dark:bg-dark-400'>
       <ReactFlow
         onInit={onInit}
         nodeTypes={nodeTypes}
@@ -79,7 +79,7 @@ export default function Flow() {
         onDrop={onDrop}
       >
         <Background />
-        <Controls position='bottom-right' />
+        <Controls className='flex dark:border-dark-100 rounded-sm !dark:bg-dark-400' position='bottom-left' />
       </ReactFlow>
       <TopMenu />
       <ModulePicker />

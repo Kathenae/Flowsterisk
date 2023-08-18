@@ -22,7 +22,7 @@ function Tabs({children} : TabsProp){
 
   return (
     <>
-      <div className='flex border-b-1 border-gray-300 text-sm max-w-full scrollable overflow-x-auto'>
+      <div className='flex border-b-1 border-gray-300 dark:border-dark-100 text-sm max-w-full scrollable overflow-x-auto'>
         {React.Children.map(children, (child, index) => {
           const tab = child as React.ReactElement<Panel>;
           return (

@@ -17,7 +17,7 @@ export default function Input({ type, name, value, placeholder, onChange, classN
         placeholder={placeholder}
         onChange={onChange}
         autoComplete="none"
-        className={`block w-full p-2 border-1 focus:outline-brand-400 rounded-md ${className}`}
+        className={`block w-full p-2 border-1 focus:outline-brand-400 rounded-md !dark:bg-dark-400 dark:border-dark-100 dark:focus:outline-dark-400 ${className}`}
      />
   )
 }

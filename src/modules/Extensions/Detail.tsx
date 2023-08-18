@@ -163,7 +163,7 @@ export default function Detail({ module } : DetailProps<ExtensionInstance>){
                <>Voicemail</>
             </Tabs.Panel>
          </Tabs>
-         <div className="mt-4 space-x-2 px-2 flex justify-end absolute bottom-0 bg-white w-full py-2 border-t-2 border-gray-200">
+         <div className="mt-4 space-x-2 px-2 flex justify-end absolute bottom-0 bg-white dark:bg-dark-400 w-full py-2 border-t-2 border-gray-200 dark:border-dark-100">
             <Button className="w-24" primary onClick={handleSubmit}>Update</Button>
             <Button className="w-24" danger onClick={handleCancel}>Cancel</Button>
          </div>
