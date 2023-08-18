@@ -2,11 +2,13 @@ import { Handle, NodeProps, Position } from 'reactflow'
 import { useInspector } from '../pages/Flow/InspectorStore'
 import { Module, ModuleInstance } from './types'
 import {useEffect} from 'react'
+import { useFlowSelection } from '../pages/Flow/hooks'
 
 export default function BaseNode({ data, id, selected} : NodeProps){
 
    const module  = data as Module<ModuleInstance>
    const { openInspector, toggleInspector } = useInspector(<module.Detail key={id} module={module}/>)
+   const { hasSelectedNodes } = useFlowSelection()
 
    const handleOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       event.preventDefault()
@@ -14,10 +16,10 @@ export default function BaseNode({ data, id, selected} : NodeProps){
    }
 
    useEffect(() => {
-      if(!selected){
+      if(!selected && !hasSelectedNodes){
          toggleInspector()
       }
-   }, [selected, toggleInspector])
+   }, [selected, hasSelectedNodes, toggleInspector])
 
    const className = `bg-white dark:bg-dark-400 dark:text-gray-100 border-1 dark:border-dark-100 cursor-pointer hover:border-brand-700 hover:text-brand-700 
    rounded border-black shadow-lg w-38 h-42 text-center overflow-hidden flex flex-col items-center group ${selected && '!border-brand-500 !text-brand-500'}`
