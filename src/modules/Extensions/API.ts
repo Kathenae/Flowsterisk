@@ -49,7 +49,7 @@ export interface ExtensionInstance extends ModuleInstance {
 
 async function list() : Promise<ExtensionInstance[]>
 {
-   const response = await api.get('api.php?list_table=ombu_extensions&no_destination=true&tenant=true')
+   const response = await api.get('modules/extensions/')
    const extensions : ExtensionInstance[] = []
 
    if(response.result){
