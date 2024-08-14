@@ -3,7 +3,8 @@
         "slim/slim": "3.*",
         "monolog/monolog": "^3.5",
         "slim/php-view": "^3.2",
-        "illuminate/database": "^10.48"
+        "illuminate/database": "^10.48",
+        "illuminate/validation": "^10.48"
     },
     "autoload": {
         "psr-4": {
