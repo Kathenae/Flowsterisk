@@ -2,6 +2,7 @@
 
 namespace App\Framework;
 
+use Illuminate\Database\DatabaseManager;
 use Slim\App as SlimApp;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -55,6 +56,10 @@ class App
    public static function logger(): Logger
    {
       return self::$app->getContainer()->logger;
+   }
+
+   public static function database(): DatabaseManager {
+      return self::$app->getContainer()->database;
    }
 
    public static function migration(): Migration
