@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Framework;
+namespace Api\Framework;
 
 use Illuminate\Validation\Factory;
 use Illuminate\Filesystem;

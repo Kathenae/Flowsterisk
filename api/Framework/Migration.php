@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Framework;
+namespace Api\Framework;
 
-use App\Framework\Console;
+use Api\Framework\Console;
 
 class Migration
 {
@@ -43,12 +43,14 @@ class Migration
     {
         $journal = $this->readJournal();
         $latestMigrationName = array_pop($journal);
-        if (isset($latestMigrationName)) {
+        if (!empty($latestMigrationName)) {
             $migration = require ($this->directory . '/' . $latestMigrationName . '.php');
             Console::println("Reverting migration \"$latestMigrationName\"");
             $migration->down();
             Console::println("Done!");
             $this->writeJournal($journal);
+        } else {
+            Console::println("No Migrations to revert!");
         }
     }
 

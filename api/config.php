@@ -9,14 +9,21 @@ $config = [
     'migrationsDir' => './Migrations',
     'routing' => [
         'type' => 'attribute_based',
-        'namespace' => 'App\\Controllers\\',
+        'namespace' => 'Api\\Controllers\\',
         'directory' => './Controllers',
     ],
     'database' => [
-        'DB_HOST' => 'localhost',
-        'DB_PORT' => '3306',
-        'DB_NAME' => 'ombutel',
-        'DB_USER' => 'vitalpbx',
-        'DB_PASSWORD' => 'vitalpbx',
+        'default' => [
+            'HOST' => $_ENV['DB_HOST'] ?? 'localhost',
+            'DATABASE' => $_ENV['DB_NAME'] ?? null,
+            'USERNAME' => $_ENV['DB_USERNAME'] ?? null,
+            'PASSWORD' => $_ENV['DB_PASSWORD'] ?? null,
+        ],
+        'modules' => [
+            'HOST' => $_ENV['OMBU_DB_HOST'] ?? null,
+            'DATABASE' => $_ENV['OMBU_DB_NAME'] ?? null,
+            'USERNAME' => $_ENV['OMBU_DB_USERNAME'] ?? null,
+            'PASSWORD' => $_ENV['OMBU_DB_PASSWORD'] ?? null
+        ]
     ],
 ];

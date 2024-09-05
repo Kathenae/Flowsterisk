@@ -1,10 +1,12 @@
 <?php
 
-use App\Framework\Console;
-use App\Framework\App;
-use Illuminate\Database\Capsule\Manager;
+use Api\Framework\Console;
+use Api\Framework\App;
 
 require_once './vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 require_once './config.php';
 
 class CommandExecutor

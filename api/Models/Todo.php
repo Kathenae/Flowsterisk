@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace Api\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Blueprint;
 
 class Todo extends Model
 {

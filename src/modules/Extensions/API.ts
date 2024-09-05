@@ -49,11 +49,12 @@ export interface ExtensionInstance extends ModuleInstance {
 
 async function list() : Promise<ExtensionInstance[]>
 {
-   const response = await api.get('modules/extensions/')
+   const response = await api.get('modules/ombu_extensions/')
    const extensions : ExtensionInstance[] = []
-
-   if(response.result){
-      response.result.forEach((entry : ExtensionInstance) => {
+   
+   if(!response.error){
+      console.log(response)
+      response.entries.forEach((entry : ExtensionInstance) => {
          const extension : ExtensionInstance = {
             ...entry,
             type: "Extensions",
