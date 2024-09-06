@@ -1,17 +1,33 @@
 <?php
 
+use Api\Framework\ApiRequest;
+use Api\Framework\ApiResponse;
 use Api\Framework\Migration;
 use Illuminate\Database\Capsule\Manager;
 use Psr\Container\ContainerInterface;
 use Slim\App;
+use Slim\Http\Headers;
 
 class Bootstrap
 {
     static function boot(App $app)
     {
         $container = $app->getContainer();
+        self::registerRequestResponse($container);
         self::registerMiddlewares($app);
         self::bootstrapDatabase($container);
+    }
+
+    private static function registerRequestResponse(ContainerInterface $container) {
+        $container["response"] = function() use ($container) {
+            $headers = new Headers(['Content-Type' => 'application/json; charset=UTF-8']);
+            $response = new ApiResponse(200, $headers);
+            return $response->withProtocolVersion($container->get('settings')['httpVersion']);
+        };
+
+        $container["request"] = function() use ($container) {
+            return ApiRequest::createFromEnvironment($container->get('environment'));
+        };
     }
 
     private static function registerMiddlewares(App $app) {

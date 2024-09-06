@@ -2,11 +2,11 @@
 
 namespace Api\Controllers;
 
+use Api\Framework\ApiRequest;
+use Api\Framework\ApiResponse;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Validator;
-use Slim\Http\Request;
-use Slim\Http\Response;
 use Api\Framework\App;
 use Api\Framework\GET;
 use Api\Framework\POST;
@@ -17,98 +17,75 @@ use Api\Modules\BaseModule;
 class ModuleController
 {
     #[GET('/modules/{moduleName}')]
-    function index(Request $request, Response $response, array $args)
+    function index(ApiRequest $request, ApiResponse $response, array $args)
     {
         $moduleName = $args['moduleName'];
         $moduleBuilder = $this->findBuilder($moduleName);
         if (isset($moduleBuilder)) {
             $entries = $moduleBuilder->get();
-            return $response->withJson([
+            return $response->success([
                 'entries' => $entries,
             ]);
         } else {
-            return $response->withJson([
-                'error' => 'MODULE_NOT_FOUND',
-                'error_msg' => 'Invalid module name'
-            ]);
+            return $response->failure('MODULE_NOT_FOUND');
         }
     }
 
     #[GET('/modules/{moduleName}/{id}')]
-    function get(Request $request, Response $response, array $args)
+    function get(ApiRequest $request, ApiResponse $response, array $args)
     {
         $id = $args['id'];
         $moduleName = $args['moduleName'];
         $moduleBuilder = $this->findBuilder($moduleName);
         if (isset($moduleBuilder)) {
             $entry = $moduleBuilder->find($id);
-            return $response->withJson([
+            return $response->success([
                 'entry' => $entry
             ]);
         } else {
-            return $response->withJson([
-                'error' => 'MODULE_NOT_FOUND',
-                'error_msg' => 'Invalid module name'
-            ]);
+            return $response->failure('MODULE_NOT_FOUND');
         }
     }
 
     #[POST('/modules/{moduleName}')]
-    function post(Request $request, Response $response, array $args)
+    function post(ApiRequest $request, ApiResponse $response, array $args)
     {
         $moduleName = $args['moduleName'];
         $moduleBuilder = $this->findBuilder($moduleName);
-        $validator = $this->makeValidator($moduleName, $request->getParsedBody());
-        if (!isset($validator) || !isset($moduleBuilder)) {
-            return $response->withJson([
-                'error' => 'MODULE_NOT_FOUND',
-                'error_msg' => 'Invalid module name'
-            ]);
+        $validation = $this->makeValidation($moduleName, $request->getParsedBody());
+        if (!isset($validation) || !isset($moduleBuilder)) {
+            return $response->failure('MODULE_NOT_FOUND');
         }
 
-        if ($validator->fails()) {
-            return $response->withJson([
-                'error' => 'VALIDATION_ERROR',
-                'error_msg' => 'Validation failed',
-                'validation_messages' => $validator->messages()
-            ]);
+        if ($validation->fails()) {
+            return $response->validationError($validation);
         }
 
-        $data = $validator->validated();
+        $data = $validation->validated();
         $id = $moduleBuilder->insertGetId($data);
-        return $response->withJson([
-            'success' => 'CREATED',
+        return $response->success([
             'id' => $id,
         ]);
     }
 
     #[PUT('/modules/{moduleName}/{id}')]
-    function put(Request $request, Response $response, array $args)
+    function put(ApiRequest $request, ApiResponse $response, array $args)
     {
         $id = $args['id'];
         $moduleName = $args['moduleName'];
         $moduleBuilder = $this->findBuilder($moduleName);
-        $validator = $this->makeValidator($moduleName, $request->getParsedBody());
-        if (!isset($validator) || !isset($moduleBuilder)) {
-            return $response->withJson([
-                'error' => 'MODULE_NOT_FOUND',
-                'error_msg' => 'Invalid module name'
-            ]);
+        $validation = $this->makeValidation($moduleName, $request->getParsedBody());
+        if (!isset($validation) || !isset($moduleBuilder)) {
+            return $response->failure('MODULE_NOT_FOUND');
         }
 
-        if ($validator->fails()) {
-            return $response->withJson([
-                'error' => 'VALIDATION_ERROR',
-                'error_msg' => 'Validation failed',
-                'validation_messages' => $validator->messages()
-            ]);
+        if ($validation->fails()) {
+            return $response->validationError($validation);
         }
 
-        $data = $validator->validated();
+        $data = $validation->validated();
         $moduleBuilder->find($id)->update($data);
-        return $response->withJson([
-            'success' => 'UPDATED',
-        ]);
+        return $response->success();
     }
 
     private function findBuilder(string $moduleName): Builder|Model|null
@@ -125,12 +102,12 @@ class ModuleController
         }
     }
 
-    private function makeValidator(string $moduleName, array $data): Validator|null
+    private function makeValidation(string $moduleName, array $data): Validator|null
     {
         $model = $this->findModule($moduleName);
         if ($model) {
-            $validator = $model->validate($data);
-            return $validator;
+            $validation = $model->validate($data);
+            return $validation;
         } else {
             return null;
         }
