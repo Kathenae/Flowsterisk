@@ -12,6 +12,10 @@ $config = [
         'namespace' => 'Api\\Controllers\\',
         'directory' => './Controllers',
     ],
+    'address_stack' => [
+        "REMOTE_ADDR", // Realible only when client not using proxies
+        "HTTP_X_FORWARDED_FOR", // Reliable only when using a reverse proxy, which then is only as reliable as REMOTE_ADDR
+    ],
     'database' => [
         'default' => [
             'HOST' => $_ENV['DB_HOST'] ?? 'localhost',

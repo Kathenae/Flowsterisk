@@ -66,4 +66,9 @@ class App
    {
       return self::$app->getContainer()->migration;
    }
+
+   public static function settings(string $param) 
+   {
+      return self::$app->getContainer()->settings[$param];
+   }
 }
