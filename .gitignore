@@ -27,3 +27,4 @@ api/vendor
 api/composer.lock
 api/Migrations/.journal
 *.env
+api/bin/.phpunit.result.cache
