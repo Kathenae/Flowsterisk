@@ -3,10 +3,8 @@
 namespace Api\Framework;
 
 use Illuminate\Database\DatabaseManager;
+use Psr\Log\LoggerInterface;
 use Slim\App as SlimApp;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-use Psr\Container\ContainerInterface;
 
 class App
 {
@@ -15,32 +13,21 @@ class App
    public static function init($config)
    {
       $app = new SlimApp(['settings' => $config]);
+      self::$app = $app;
 
-      self::setupLogger($app);
-
-      if (isset($config['bootstrap'])) {
-         $config['bootstrap']::boot($app);
+      $bootstraper = self::settings('bootstrap');
+      if (isset($bootstraper)) {
+         $bootstraper = new $bootstraper($app);
+         $bootstraper->boot();
       }
 
       $router = new Router();
+      $routing = self::settings('routing');
       $router->resolve(
          $app,
-         namespace: $config['routing']['namespace'],
-         searchDirectory: $config['routing']['directory']
+         namespace: $routing['namespace'],
+         searchDirectory: $routing['directory']
       );
-      self::$app = $app;
-   }
-
-   private static function setupLogger(SlimApp $app, string $logFile = "logs/app.log")
-   {
-      // Logger
-      $container = $app->getContainer();
-      $container['logger'] = function (ContainerInterface $c) use ($logFile) {
-         $logger = new Logger('app_logger');
-         $fileHandler = new StreamHandler($logFile);
-         $logger->pushHandler($fileHandler);
-         return $logger;
-      };
    }
 
    public static function run()
@@ -53,7 +40,7 @@ class App
       return self::$app->getContainer()->router->getRoutes();
    }
 
-   public static function logger(): Logger
+   public static function logger(): LoggerInterface
    {
       return self::$app->getContainer()->logger;
    }
@@ -69,6 +56,6 @@ class App
 
    public static function settings(string $param) 
    {
-      return self::$app->getContainer()->settings[$param];
+      return self::$app->getContainer()->settings[$param] ?? null;
    }
 }

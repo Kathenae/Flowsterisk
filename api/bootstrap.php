@@ -4,21 +4,28 @@ use Api\Framework\ApiRequest;
 use Api\Framework\ApiResponse;
 use Api\Framework\Migration;
 use Illuminate\Database\Capsule\Manager;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Http\Headers;
 
 class Bootstrap
 {
-    static function boot(App $app)
+    public function __construct(
+        private App $app
+    ) {}
+    
+    public function boot()
     {
-        $container = $app->getContainer();
-        self::registerRequestResponse($container);
-        self::registerMiddlewares($app);
-        self::bootstrapDatabase($container);
+        $this->bootHttp();
+        $this->bootMiddlewares();
+        $this->bootDatabase();
+        $this->bootLogger();
     }
 
-    private static function registerRequestResponse(ContainerInterface $container) {
+    private function bootHttp() {
+        $container = $this->app->getContainer();
         $container["response"] = function() use ($container) {
             $headers = new Headers(['Content-Type' => 'application/json; charset=UTF-8']);
             $response = new ApiResponse(200, $headers);
@@ -30,15 +37,16 @@ class Bootstrap
         };
     }
 
-    private static function registerMiddlewares(App $app) {
+    private function bootMiddlewares() {
         $middlewares = require('./middleware.php');
         foreach($middlewares as $middleware){
-            $app->add($middleware);
+            $this->app->add($middleware);
         }
     }
 
-    private static function bootstrapDatabase(ContainerInterface $container)
+    private function bootDatabase()
     {
+        $container = $this->app->getContainer();
         $connections = $container['settings']['database'];
         $capsule = new Manager();
 
@@ -60,6 +68,24 @@ class Bootstrap
 
         $container['migration'] = function ($c) {
             return new Migration($c['settings']['migrationsDir']);
+        };
+    }
+
+    private function bootLogger()
+    {
+        $container = $this->app->getContainer();
+        $container['logger'] = function (ContainerInterface $c) {
+            $logger = new Logger('app_logger');
+
+            $handler = new StreamHandler("logs/info.log", Logger::INFO);
+            $logger->pushHandler($handler);
+
+            $handler = new StreamHandler("logs/error.log", Logger::ERROR);
+            $logger->pushHandler($handler);
+
+            $handler = new StreamHandler("logs/critical.log", Logger::CRITICAL);
+            $logger->pushHandler($handler);
+            return $logger;
         };
     }
 }
