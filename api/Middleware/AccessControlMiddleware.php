@@ -12,6 +12,10 @@ class AccessControlMiddleware {
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization, Authentication, Tenant-ID')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+        
+        if($request->isMethod('OPTIONS')) {
+            return $response->withStatus(200);
+        }
         return $next($request, $response);        
     }
 }
