@@ -17,7 +17,7 @@ class ApiResponse extends Response {
         return $this->failure('VALIDATION_ERROR', $validation->errors()->toArray())->withStatus(400, 'Validation Error');
     }
 
-    public function failure(string $code, array $errors = null) {
+    public function failure(string $code, ?array $errors = null) {
         return $this->withJson([
             'status' => 'failure',
             'code' => $code,
