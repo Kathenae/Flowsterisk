@@ -3,22 +3,31 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Flow from "./pages/Flow";
 import ErrorPage from "./error-page";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
    {
       path: '/',
       children: [
          {
+            path: "/login",
+            element: <Login />
+         },
+         {
             path: "/",
-            element: <Home />
+            element: (
+               <ProtectedRoute>
+                  <Home />
+               </ProtectedRoute>
+            )
          },
          {
             path: "/flow",
-            element: <Flow />
-         },
-         {
-            path: "/login",
-            element: <Login />
+            element: (
+               <ProtectedRoute>
+                  <Flow />
+               </ProtectedRoute>
+            )
          },
       ],
       errorElement: <ErrorPage />

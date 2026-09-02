@@ -1,5 +1,18 @@
+import authService from './services/auth'
+
 const BASE_URL = "http://localhost:8080/"
-const AUTH_TOKEN = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2OTExNTU2MjIsImlzcyI6ImxvY2FsaG9zdCIsIm5iZiI6MTY5MTE1NTYyMiwiZXhwIjoxNzIyNzc4MDIyLCJ1c2VyTmFtZSI6ImFkbWluIiwicG9ydGFsVXNlciI6ZmFsc2UsInN1cGVyQWRtaW4iOnRydWV9.fz2GwWSM--7waoUbZY8mHqoulUc0X425mRHgvgdN5F32DJd9rgc6aCRtsb84Z4DfBDqIJG9rZmCSHsbhYmsyjQ"
+
+/**
+ * Get the current auth token, with fallback to hardcoded token for development
+ */
+function getAuthToken(): string {
+   const token = authService.getToken()
+   if (token) {
+      return `Bearer ${token}`
+   }
+   // Fallback for development/testing
+   return "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2OTExNTU2MjIsImlzcyI6ImxvY2FsaG9zdCIsIm5iZiI6MTY5MTE1NTYyMiwiZXhwIjoxNzIyNzc4MDIyLCJ1c2VyTmFtZSI6ImFkbWluIiwicG9ydGFsVXNlciI6ZmFsc2UsInN1cGVyQWRtaW4iOnRydWV9.fz2GwWSM--7waoUbZY8mHqoulUc0X425mRHgvgdN5F32DJd9rgc6aCRtsb84Z4DfBDqIJG9rZmCSHsbhYmsyjQ"
+}
 
 /**
  * Represents a successful API response
@@ -30,7 +43,7 @@ async function request<T = Record<string, unknown>>(
    const response = await fetch(BASE_URL + url, {
       headers: {
          "Content-Type": "application/json",
-         "Authentication": AUTH_TOKEN,
+         "Authentication": getAuthToken(),
          "Tenant-ID": "1",
       },
       mode: "cors",
