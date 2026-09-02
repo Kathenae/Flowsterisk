@@ -1,7 +1,6 @@
-import api from "../api"
+import api from '../../api';
 
 const AUTH_TOKEN_KEY = "auth_token"
-const AUTH_USER_KEY = "auth_user"
 
 export interface AuthUser {
    username: string
@@ -37,7 +36,6 @@ class AuthService {
          // Decode JWT to get user info (without verification, since we trust our server)
          const user = this.decodeToken(token)
          if (user) {
-            this.setUser(user)
             return user
          }
          
@@ -53,7 +51,6 @@ class AuthService {
     */
    logout(): void {
       localStorage.removeItem(AUTH_TOKEN_KEY)
-      localStorage.removeItem(AUTH_USER_KEY)
    }
 
    /**
@@ -64,25 +61,19 @@ class AuthService {
    }
 
    /**
-    * Store auth token
+    * Store auth token 
     */
    private setToken(token: string): void {
       localStorage.setItem(AUTH_TOKEN_KEY, token)
    }
 
    /**
-    * Get stored user info
+    * Get current user from the stored JWT token.
     */
-   getUser(): AuthUser | null {
-      const user = localStorage.getItem(AUTH_USER_KEY)
-      return user ? JSON.parse(user) : null
-   }
-
-   /**
-    * Store user info
-    */
-   private setUser(user: AuthUser): void {
-      localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user))
+   getCurrentUser(): AuthUser | null {
+      const token = this.getToken()
+      if (!token) return null
+      return this.decodeToken(token)
    }
 
    /**
@@ -110,3 +101,4 @@ class AuthService {
 }
 
 export default new AuthService()
+

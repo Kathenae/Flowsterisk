@@ -2,32 +2,31 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import authService from "../services/auth";
+import { useAuthStore } from "../lib/auth";
 
 export default function Login() {
    const navigate = useNavigate();
    const [username, setUsername] = useState("");
    const [password, setPassword] = useState("");
-   const [isLoading, setIsLoading] = useState(false);
-   const [error, setError] = useState<string | null>(null);
+
+   const { isLoading, error, login } = useAuthStore((state) => ({
+      isLoading: state.isLoading,
+      error: state.error,
+      login: state.login,
+   }));
 
    const handleLogin = async (e: React.FormEvent) => {
       e.preventDefault();
-      setIsLoading(true);
-      setError(null);
 
-      const user = await authService.login({ username, password });
+      const success = await login({ username, password });
 
-      if (user) {
+      if (success) {
          // Login successful
          navigate("/");
       } else {
-         // Login failed
-         setError("Invalid username or password");
+         // Login failed - error is already in store
          setPassword("");
       }
-
-      setIsLoading(false);
    };
 
    return (

@@ -1,4 +1,4 @@
-import authService from './services/auth'
+import { authService } from './lib/auth'
 
 const BASE_URL = "http://localhost:8080/"
 
