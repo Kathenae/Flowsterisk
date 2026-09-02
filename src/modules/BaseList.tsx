@@ -4,14 +4,14 @@ import { Module, ModuleInstance } from './types'
 import { useInspectorStore } from '../components/flow/InspectorStore'
 import { ModuleItem, ModuleList } from '../components/flow/ModulePicker'
 
-type BaseListProps = {
-   module : Module<ModuleInstance>
+type BaseListProps<T extends ModuleInstance> = {
+   module : Module<T>
 }
 
-export default function BaseList({module} : BaseListProps){
+export default function BaseList<T extends ModuleInstance>({module} : BaseListProps<T>){
 
-   const [items, setItems] = useState<ModuleInstance[]>([])
-   const [filteredItems, setFilteredItems] = useState<ModuleInstance[]>([])
+   const [items, setItems] = useState<T[]>([])
+   const [filteredItems, setFilteredItems] = useState<T[]>([])
    const openInspector = useInspectorStore((state) => state.open)
 
    useEffect(() => {

@@ -3,9 +3,9 @@
 import { useState } from "react";
 import Button from "../../components/Button";
 import Tabs from "../../components/Tabs";
-import { DetailProps } from "../types";
+import { DetailProps, ModuleInstance } from "../types";
 
-export default function Detail(props : DetailProps<unknown>){
+export default function Detail(props : DetailProps<ModuleInstance>){
    const [basic, setBasic] = useState(0)
    const [advanced, setAdvanced] = useState(0)
    const [extra, setExtra] = useState(0)

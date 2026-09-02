@@ -1,7 +1,7 @@
 // API endpoints for module CRUD Operations
 
 import api from "../../api"
-import { ModuleInstance } from "../types"
+import { ModuleApiEntry, ModuleInstance, ModuleListResponse } from "../types"
 
 export interface ExtensionInstance extends ModuleInstance {
    absent_secretary: "no" | "yes"
@@ -49,12 +49,11 @@ export interface ExtensionInstance extends ModuleInstance {
 
 async function list() : Promise<ExtensionInstance[]>
 {
-   const response = await api.get('modules/ombu_extensions/')
+   const response = await api.get<ModuleListResponse<ModuleApiEntry<ExtensionInstance>>>('modules/extensions/')
    const extensions : ExtensionInstance[] = []
    
-   if(!response.error){
-      console.log(response)
-      response.entries.forEach((entry : ExtensionInstance) => {
+   if(response.status === "success"){
+      response.data.entries.forEach((entry : ModuleApiEntry<ExtensionInstance>) => {
          const extension : ExtensionInstance = {
             ...entry,
             type: "Extensions",

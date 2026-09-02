@@ -1,4 +1,23 @@
 import { NodeProps } from "reactflow"
+import { ApiResponse } from "../api"
+
+export type ModuleApiEntry<T extends ModuleInstance> = Omit<T, "id" | "type" | "label" | "destinations">
+
+export interface ModuleListResponse<T> {
+   entries: T[]
+}
+
+export interface ModuleGetResponse<T> {
+   entry: T | null
+}
+
+export interface ModuleCreateResponse {
+   id: number
+}
+
+export type ModuleListApiResponse<T extends ModuleInstance> = ApiResponse<ModuleListResponse<ModuleApiEntry<T>>>
+export type ModuleGetApiResponse<T extends ModuleInstance> = ApiResponse<ModuleGetResponse<ModuleApiEntry<T>>>
+export type ModuleCreateApiResponse = ApiResponse<ModuleCreateResponse>
 
 export type DetailProps<T extends ModuleInstance> =  {
    module: Module<T>
@@ -26,7 +45,6 @@ export interface ModuleInstance {
    destinations: {
       [key: string] : ModuleInstance
    },
-   [key : string] : unknown
 }
 
 export interface ModuleAPI<T> {
