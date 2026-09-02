@@ -1,8 +1,8 @@
 // Component that will be used to show the list of specific modules instances on the module picker
 import { useState, useEffect } from 'react'
 import { Module, ModuleInstance } from './types'
-import { useInspectorStore } from '../pages/Flow/InspectorStore'
-import { ModuleItem, ModuleList } from '../pages/Flow/ModulePicker'
+import { useInspectorStore } from '../components/flow/InspectorStore'
+import { ModuleItem, ModuleList } from '../components/flow/ModulePicker'
 
 type BaseListProps = {
    module : Module<ModuleInstance>

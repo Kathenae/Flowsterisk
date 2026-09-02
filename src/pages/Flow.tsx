@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react'
 import ReactFlow, { Background, Connection, Edge, EdgeChange, Node, NodeChange, NodeProps, ReactFlowInstance, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow'
 import 'reactflow/dist/style.css'
-import TopMenu from './TopMenu'
-import Inspector from './Inspector'
-import ModulePicker from './ModulePicker'
-import { Module, ModuleInstance } from '../../modules/types'
-import modules from '../../modules'
-import Controls from './Controls'
+import TopMenu from '../components/flow/TopMenu'
+import Inspector from '../components/flow/Inspector'
+import ModulePicker from '../components/flow/ModulePicker'
+import { Module, ModuleInstance } from '../modules/types'
+import modules from '../modules'
+import Controls from '../components/flow/Controls'
 
 const nodeTypes = {} as {
   [key: string] : (props: NodeProps) => React.JSX.Element

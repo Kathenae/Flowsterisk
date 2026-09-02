@@ -1,5 +1,5 @@
 import { PropsWithChildren, useState } from 'react'
-import Button from '../../components/Button'
+import Button from '../Button'
 import { useModulePickerState } from './modulePickerStore'
 import { Module, ModuleInstance } from '../../modules/types'
 import modules from '../../modules';

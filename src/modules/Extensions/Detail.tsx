@@ -7,7 +7,7 @@ import Input from "../../components/Input";
 import Checkbox from "../../components/Checkbox";
 import { ExtensionInstance } from "./API";
 import Button from "../../components/Button";
-import { useInspectorStore } from "../../pages/Flow/InspectorStore";
+import { useInspectorStore } from "../../components/flow/InspectorStore";
 import { DetailProps } from "../types";
 
 function parseCallerId(cidString: string | null | undefined){

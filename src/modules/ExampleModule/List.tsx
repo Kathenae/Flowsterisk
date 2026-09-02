@@ -1,9 +1,9 @@
 // Component that will be used to show the list of specific modules instances on the module picker
 import { useState, useEffect } from 'react'
 import API, { ExampleInstance } from './API'
-import { ModuleItem, ModuleList } from '../../pages/Flow/ModulePicker'
+import { ModuleItem, ModuleList } from '../../components/flow/ModulePicker'
 import modules from '..'
-import { useInspectorStore } from '../../pages/Flow/InspectorStore'
+import { useInspectorStore } from '../../components/flow/InspectorStore'
 import { Module } from '../types'
 
 export default function List(){

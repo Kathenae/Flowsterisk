@@ -1,5 +1,5 @@
-import Button from '../../components/Button'
-import DarkModeToggle from '../../components/DarkModeToggle';
+import Button from '../Button'
+import DarkModeToggle from '../DarkModeToggle';
 import { useInspectorStore } from './InspectorStore';
 import { useModulePickerState } from './modulePickerStore';
 

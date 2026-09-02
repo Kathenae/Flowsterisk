@@ -1,8 +1,8 @@
 import { Handle, NodeProps, Position } from 'reactflow'
-import { useInspector } from '../pages/Flow/InspectorStore'
+import { useInspector } from '../components/flow/InspectorStore'
 import { Module, ModuleInstance } from './types'
 import {useEffect} from 'react'
-import { useFlowSelection } from '../pages/Flow/hooks'
+import { useFlowSelection } from '../components/flow/hooks'
 
 export default function BaseNode({ data, id, selected} : NodeProps){
 

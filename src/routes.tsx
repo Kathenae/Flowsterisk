@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Flow from "./pages/Flow/Flow";
+import Flow from "./pages/Flow";
 import ErrorPage from "./error-page";
 
 const router = createBrowserRouter([
@@ -13,7 +13,7 @@ const router = createBrowserRouter([
             element: <Home />
          },
          {
-            path: "/view",
+            path: "/flow",
             element: <Flow />
          },
          {

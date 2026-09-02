@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Panel, useReactFlow } from "reactflow";
-import Button from "../../components/Button";
+import Button from "../Button";
 import { useFlowSelection } from './hooks';
 
 export default function Controls(){
