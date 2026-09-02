@@ -57,13 +57,22 @@ class Router
                $ar = explode('\\', $routeAttribute->getName());
                $attributeName = end($ar);
                $httpMethod = null;
+               $routePaths = array_values(array_unique([
+                  $route->path,
+                  rtrim($route->path, '/') ?: '/',
+                  rtrim($route->path, '/') . '/',
+               ]));
                if (in_array($attributeName, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'])) {
                   $httpMethod = $attributeName;
-                  $result = call_user_func_array([$app, $httpMethod], [$route->path, "$className:$methodName"]);
+                  foreach ($routePaths as $routePath) {
+                     $result = call_user_func_array([$app, $httpMethod], [$routePath, "$className:$methodName"]);
+                  }
                } else if ($attributeName == 'Route') {
                   $httpMethods = explode('|', $route->method);
                   foreach ($httpMethods as $httpMethod) {
-                     $result = call_user_func_array([$app, $httpMethod], [$route->path, "$className:$methodName"]);
+                     foreach ($routePaths as $routePath) {
+                        $result = call_user_func_array([$app, $httpMethod], [$routePath, "$className:$methodName"]);
+                     }
                   }
                }
 
