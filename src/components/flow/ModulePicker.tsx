@@ -43,11 +43,13 @@ export function ModuleItem<T extends ModuleInstance>({ className, onClick, label
   }
   
   return (
-    <Button onClick={onClick} onDragStart={onDragStart} draggable className={`min-w-fit text-sm flex flex-row items-center justify-start h-18 ${className}`}>
-      <i className={`${module.iconClass} text-2xl`} />
-      <p className='whitespace-normal max-w-54 ml-2 text-left mt-2 overflow-ellipsis overflow-hidden'>
-        {label ?? module.label}
-      </p>
+    <Button onClick={onClick} onDragStart={onDragStart} draggable className={`pl-4 ${className}`}>
+      <div className="w-full text-sm flex flex-row items-center justify-start h-18 ">
+        <i className={`${module.iconClass} text-2xl`} />
+        <p className='whitespace-normal max-w-54 ml-2 text-left mt-2 overflow-ellipsis overflow-hidden'>
+          {label ?? module.label}
+        </p>
+      </div>
     </Button>
   )
 }

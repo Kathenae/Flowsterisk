@@ -20,7 +20,7 @@ export default function Button({ children, primary, danger, full, className, dra
   return (
     <button 
       type={type}
-      className={`p-2 bg-white text-gray-600 !dark:text-gray-100 dark:bg-dark-200 hover:bg-brand-200 hover:border-brand-200 border-gray-300 dark:border-dark-100 border-1 rounded-lg ${full && "w-full"} ${primary && primaryClasses} ${danger && dangerClasses} ${className}`} 
+      className={`p-2 flex items-center justify-center bg-white text-gray-600 !dark:text-gray-100 dark:bg-dark-200 hover:bg-brand-200 hover:border-brand-200 border-gray-300 dark:border-dark-100 border-1 rounded-lg ${full && "w-full"} ${primary && primaryClasses} ${danger && dangerClasses} ${className}`} 
       draggable={draggable} 
       onClick={onClick}
       onDragStart={onDragStart}

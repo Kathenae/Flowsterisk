@@ -26,7 +26,7 @@ export default function TopMenu() {
             <button className='px-4 py-1 bg-transparent hover:font-medium'>Help</button>
           </div>
 
-          <div className='ml-auto'>
+          <div className='ml-auto flex'>
             <DarkModeToggle />
             <Button  className='ml-2 w-10 h-10'>
               <i className='i-carbon-user' />

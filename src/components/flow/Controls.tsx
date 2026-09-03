@@ -60,12 +60,12 @@ export default function Controls(){
         <Button className='h-8 !py-0 w-16 rounded-none' onClick={handleFit}>{Math.round(zoomPercent * 100) + "%"}</Button>
         <Button className='h-8 !py-0 border-l-none rounded-l-none' onClick={handleZoomIn}><i className='i-carbon-add' /></Button>
 
-        <div className='ml-2'>
+        <div className='ml-2 flex'>
           <Button className='h-8 !py-0 border-r-none rounded-r-none' onClick={() => zoomOut({ duration: 100 })}><i className='i-carbon-undo' /></Button>
           <Button className='h-8 !py-0 rounded-l-none' onClick={() => zoomOut({ duration: 100 })}><i className='i-carbon-redo' /></Button>
         </div>
       </Panel>
-      <Panel position='bottom-center' className={`transition-all ${!hasSelectedNodes && '!-bottom-12'}`}>
+      <Panel position='bottom-center' className={`transition-all flex ${!hasSelectedNodes && '!-bottom-12'}`}>
         <Button className='h-8 !py-0 mr-2' onClick={handleCopy}><i className='i-carbon-copy' /></Button>
         <Button className='h-8 !py-0 mr-2'><i className='i-carbon-cut' /></Button>
         <Button danger className='h-8 !py-0 mr-2' onClick={handleDelete}><i className='i-carbon-delete' /></Button>
