@@ -98,9 +98,9 @@ export default function ModulePicker() {
           </>
         }
 
-          {activeModule?.List &&
-            <activeModule.List module={activeModule} />
-          }
+        {activeModule?.List &&
+          <activeModule.List module={activeModule} />
+        }
       </div>
     </div>
   )
