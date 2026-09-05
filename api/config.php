@@ -1,16 +1,16 @@
 <?php
 
-require_once './bootstrap.php';
+require_once __DIR__ . '/bootstrap.php';
 
 $config = [
     'displayErrorDetails' => true,
     'addContentLengthHeader' => false, 
     'bootstrap' => Bootstrap::class,
-    'migrationsDir' => './Migrations',
+    'migrationsDir' => __DIR__ . '/Migrations',
     'routing' => [
         'type' => 'attribute_based',
         'namespace' => 'Api\\Controllers\\',
-        'directory' => './Controllers',
+        'directory' => __DIR__ . '/Controllers',
     ],
     'address_stack' => [
         "REMOTE_ADDR", // Realible only when client not using proxies

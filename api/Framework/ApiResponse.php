@@ -2,15 +2,16 @@
 
 namespace Api\Framework;
 use Illuminate\Validation\Validator;
-use Slim\Http\Response;
+use Slim\Psr7\Response;
 
 class ApiResponse extends Response {
     
     public function success(array $data = []) {
-        return $this->withJson([
+        $this->getBody()->write(json_encode([
             'status' => 'success',
             'data'=> $data,
-        ]);
+        ]));
+        return $this->withHeader('Content-Type', 'application/json');
     }
 
     public function validationError(Validator $validation) {
@@ -18,10 +19,11 @@ class ApiResponse extends Response {
     }
 
     public function failure(string $code, ?array $errors = null) {
-        return $this->withJson([
+        $this->getBody()->write(json_encode([
             'status' => 'failure',
             'code' => $code,
             'errors' => $errors,
-        ]);
+        ]));
+        return $this->withHeader('Content-Type', 'application/json');
     }
 }

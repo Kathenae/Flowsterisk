@@ -2,10 +2,35 @@
 
 namespace Api\Framework;
 use Api\Framework\Validation;
-use Slim\Http\Request;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Psr7\Headers;
+use Slim\Psr7\Request;
 
 class ApiRequest extends Request
 {
+    public static function fromRequest(ServerRequestInterface $request): self
+    {
+        $apiRequest = new self(
+            $request->getMethod(),
+            $request->getUri(),
+            new Headers($request->getHeaders()),
+            $request->getCookieParams(),
+            $request->getServerParams(),
+            $request->getBody(),
+            $request->getUploadedFiles()
+        );
+
+        $apiRequest = $apiRequest
+            ->withQueryParams($request->getQueryParams())
+            ->withParsedBody($request->getParsedBody());
+
+        foreach ($request->getAttributes() as $name => $value) {
+            $apiRequest = $apiRequest->withAttribute($name, $value);
+        }
+
+        return $apiRequest;
+    }
+
 
     public function getClientIpAddress()
     {

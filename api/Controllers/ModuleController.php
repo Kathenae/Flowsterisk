@@ -2,6 +2,7 @@
 
 namespace Api\Controllers;
 
+use Api\Exceptions\UnknownModuleException;
 use Api\Framework\ApiRequest;
 use Api\Framework\ApiResponse;
 use Illuminate\Contracts\Database\Query\Builder;

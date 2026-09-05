@@ -1,21 +1,26 @@
 <?php
 
 namespace Api\Middleware;
+use Api\Framework\ApiResponse;
 use Api\Framework\App;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Psr7\Headers;
 
 class AccessControlMiddleware {
-    public function __invoke(Request $request, Response $response, callable $next)
+    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler): Response
     {
-        $response = $response
+        if($request->getMethod() === 'OPTIONS') {
+            $response = new ApiResponse(200, new Headers());
+        } else {
+            $response = $handler->handle($request);
+        }
+
+        return $response
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization, Authentication, Tenant-ID')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-        
-        if($request->isMethod('OPTIONS')) {
-            return $response->withStatus(200);
-        }
-        return $next($request, $response);        
     }
 }

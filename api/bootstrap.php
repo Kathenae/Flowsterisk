@@ -8,7 +8,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Slim\App;
-use Slim\Http\Headers;
+use Slim\Psr7\Headers;
 
 class Bootstrap
 {
@@ -26,19 +26,19 @@ class Bootstrap
 
     private function bootHttp() {
         $container = $this->app->getContainer();
-        $container["response"] = function() use ($container) {
+        $container->set("response", function() use ($container) {
             $headers = new Headers(['Content-Type' => 'application/json; charset=UTF-8']);
             $response = new ApiResponse(200, $headers);
-            return $response->withProtocolVersion($container->get('settings')['httpVersion']);
-        };
+            return $response->withProtocolVersion($container->get('settings')['httpVersion'] ?? '1.1');
+        });
 
-        $container["request"] = function() use ($container) {
-            return ApiRequest::createFromEnvironment($container->get('environment'));
-        };
+        $container->set("request", fn () => ApiRequest::fromRequest(
+            \Slim\Psr7\Factory\ServerRequestFactory::createFromGlobals()
+        ));
     }
 
     private function bootMiddlewares() {
-        $middlewares = require('./middleware.php');
+        $middlewares = require(__DIR__ . '/middleware.php');
         foreach($middlewares as $middleware){
             $this->app->add($middleware);
         }
@@ -47,7 +47,7 @@ class Bootstrap
     private function bootDatabase()
     {
         $container = $this->app->getContainer();
-        $connections = $container['settings']['database'];
+        $connections = $container->get('settings')['database'];
         $capsule = new Manager();
 
         foreach ($connections as $connectionName => $param) {
@@ -62,30 +62,30 @@ class Bootstrap
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
 
-        $container['database'] = function ($c) use ($capsule) {
+        $container->set('database', function ($c) use ($capsule) {
             return $capsule->getDatabaseManager();
-        };
+        });
 
-        $container['migration'] = function ($c) {
-            return new Migration($c['settings']['migrationsDir']);
-        };
+        $container->set('migration', function ($c) {
+            return new Migration($c->get('settings')['migrationsDir']);
+        });
     }
 
     private function bootLogger()
     {
         $container = $this->app->getContainer();
-        $container['logger'] = function (ContainerInterface $c) {
+        $container->set('logger', function (ContainerInterface $c) {
             $logger = new Logger('app_logger');
 
-            $handler = new StreamHandler("logs/info.log", Logger::INFO);
+            $handler = new StreamHandler(__DIR__ . "/logs/info.log", Logger::INFO);
             $logger->pushHandler($handler);
 
-            $handler = new StreamHandler("logs/error.log", Logger::ERROR);
+            $handler = new StreamHandler(__DIR__ . "/logs/error.log", Logger::ERROR);
             $logger->pushHandler($handler);
 
-            $handler = new StreamHandler("logs/critical.log", Logger::CRITICAL);
+            $handler = new StreamHandler(__DIR__ . "/logs/critical.log", Logger::CRITICAL);
             $logger->pushHandler($handler);
             return $logger;
-        };
+        });
     }
 }

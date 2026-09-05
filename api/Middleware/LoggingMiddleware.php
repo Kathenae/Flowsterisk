@@ -4,9 +4,11 @@ namespace Api\Middleware;
 use Api\Framework\ApiRequest;
 use Api\Framework\ApiResponse;
 use Api\Framework\App;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class LoggingMiddleware {
-    public function __invoke(ApiRequest $request, ApiResponse $response, callable $next)
+    public function __invoke(ApiRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
 
         App::logger()->info(
@@ -15,6 +17,6 @@ class LoggingMiddleware {
             $request->getProtocolVersion() . " - " . 
             $request->getClientIpAddress()
         );
-        return $next($request, $response);        
+        return $handler->handle($request);
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Translation;
 
 class Validation {
     public static function make($data, $rules, $messages = [], $attributes = []) {
-        $default_messages = require('./Messages/en/validation.php');
+        $default_messages = require(__DIR__ . '/../Messages/en/validation.php');
         $filesystem = new Filesystem\Filesystem();
         $fileLoader = new Translation\FileLoader($filesystem, '');
         $translator = new Translation\Translator($fileLoader, 'en_US');

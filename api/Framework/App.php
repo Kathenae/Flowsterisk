@@ -2,9 +2,13 @@
 
 namespace Api\Framework;
 
+use DI\Container;
 use Illuminate\Database\DatabaseManager;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
-use Slim\App as SlimApp;
+use Slim\Factory\AppFactory;
 
 class App
 {
@@ -12,8 +16,15 @@ class App
 
    public static function init($config)
    {
-      $app = new SlimApp(['settings' => $config]);
+      $container = new Container();
+      $container->set('settings', $config);
+      $app = AppFactory::create(
+         new ApiResponseFactory($config['httpVersion'] ?? '1.1'),
+         $container
+      );
       self::$app = $app;
+
+      $app->addRoutingMiddleware();
 
       $bootstraper = self::settings('bootstrap');
       if (isset($bootstraper)) {
@@ -28,6 +39,20 @@ class App
          namespace: $routing['namespace'],
          searchDirectory: $routing['directory']
       );
+
+      $app->addBodyParsingMiddleware();
+      $app->add(function (ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface {
+         if (!$request instanceof ApiRequest) {
+            $request = ApiRequest::fromRequest($request);
+         }
+
+         return $handler->handle($request);
+      });
+      $app->addErrorMiddleware(
+         $config['displayErrorDetails'] ?? false,
+         true,
+         true
+      );
    }
 
    public static function run()
@@ -37,25 +62,25 @@ class App
 
    public static function routes(): array
    {
-      return self::$app->getContainer()->router->getRoutes();
+      return self::$app->getRouteCollector()->getRoutes();
    }
 
    public static function logger(): LoggerInterface
    {
-      return self::$app->getContainer()->logger;
+      return self::$app->getContainer()->get('logger');
    }
 
    public static function database(): DatabaseManager {
-      return self::$app->getContainer()->database;
+      return self::$app->getContainer()->get('database');
    }
 
    public static function migration(): Migration
    {
-      return self::$app->getContainer()->migration;
+      return self::$app->getContainer()->get('migration');
    }
 
    public static function settings(string $param) 
    {
-      return self::$app->getContainer()->settings[$param] ?? null;
+      return self::$app->getContainer()->get('settings')[$param] ?? null;
    }
 }
