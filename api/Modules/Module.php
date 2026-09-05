@@ -12,8 +12,12 @@ use Illuminate\Support\Str;
 
 class Module extends OmbuModel
 {
+    private ?string $moduleId = null;
     private ?string $moduleName = null;
 
+    /**
+     * Canonical module names
+     */
     private static array $moduleNames = [
         'inbound_routes',
         'extensions',
@@ -34,7 +38,6 @@ class Module extends OmbuModel
         'trunks',
     ];
 
-
     /**
      * Some modules are named to with diferrent names in the 
      * ombu_modules table from what their actual corresponding
@@ -44,10 +47,41 @@ class Module extends OmbuModel
      * 
      */
     protected static array $moduleAliases = [
+        'inbound_route' => 'inbound_routes',
         'preannoun' => 'announcements',
+        'ivr' => 'ivrs',
         'custom_app' => 'custom_applications',
         'custom_dest' => 'custom_destinations',
         'parking' => 'parking_lots',
+        'call_back' => 'callbacks',
+        'ring_group' => 'ring_groups',
+        'ars' => 'outbound_routes',
+        'nightmode' => 'nightmodes',
+    ];
+    
+    /**
+     * Module ids mapping, statically mapping each module to its id as its 
+     * defined in the ombu_modules table to avoid querying this at runtime
+     * presumably saving us a few ms of queries (could still query this and cache it somehow but thats just idk)
+     */
+    protected static array $moduleIds = [
+        'inbound_routes' => 29,
+        'extensions' => 1,
+        'announcements' => 33,
+        'dynamic_destinations' => 145,
+        'ivrs' => 31,
+        'custom_applications' => 9,
+        'custom_destinations' => 10,
+        'custom_contexts' => 146,
+        'parking_lots' => 11,
+        'callbacks' => 38,
+        'ring_groups' => 20,
+        'queues' => 21,
+        'outbound_routes' => 28,
+        'time_conditions' => 79,
+        'languages' => 34,
+        'nightmodes' => 35,
+        'trunks' => 26,
     ];
 
     private $destinationColumnsMeta = [
@@ -87,6 +121,7 @@ class Module extends OmbuModel
         }
 
         $module = new static();
+        $module->moduleId = self::moduleIdForModuleName($name);
         $module->moduleName = $name;
         return $module;
     }
@@ -98,6 +133,14 @@ class Module extends OmbuModel
         $className = StringUtils::snakeToPascalCase($className);
         $modelClass = "Api\\Modules\\$className";
         return $modelClass;
+    }
+
+    public static function moduleIdForModuleName(string $name) {
+        if(isset(self::$moduleIds[$name]) == false) {
+            throw new UnknownModuleException($name);
+        }
+
+        return self::$moduleIds[$name];
     }
 
     private static function resolveModuleName(string $name): string
@@ -121,6 +164,14 @@ class Module extends OmbuModel
     public function getLabel()
     {
         return $this->getModuleName();
+    }
+
+    public function getNameAsSeenInOmbuModules(): string
+    {
+        $moduleName = $this->getModuleName();
+        $databaseName = array_search($moduleName, self::$moduleAliases, true);
+
+        return $databaseName ?: $moduleName;
     }
 
     public function newInstance($attributes = [], $exists = false)
@@ -182,7 +233,7 @@ class Module extends OmbuModel
                         d.id, 
                         d.category_id, 
                         m.name AS module_name, 
-                        d.module_id AS module_id 
+                        d.module_id AS module_id,
                         d.index AS module_instance_id
                     FROM ombu_destinations AS d 
                     LEFT JOIN ombu_modules AS m 

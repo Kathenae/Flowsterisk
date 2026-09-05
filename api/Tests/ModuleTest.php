@@ -1,5 +1,6 @@
 <?php
 use Api\Exceptions\UnknownModuleException;
+use Api\Framework\App;
 use Api\Modules\Module;
 use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\assertNotNull;
@@ -8,11 +9,38 @@ use function PHPUnit\Framework\assertTrue;
 final class ModuleTest extends TestCase
 {
 
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        Dotenv\Dotenv::createImmutable(dirname(__DIR__))->load();
+        require dirname(__DIR__) . '/config.php';
+        App::init($config);
+    }
+
     public function testCanCreateModulesFromName()
     {
         foreach (Module::getModuleNames() as $name) {
             $module = Module::FromName($name);
             assertNotNull($module);
+        }
+    }
+
+    public function testUsesExpectedDatabaseModuleIds()
+    {
+        $databaseModuleIds = Module::FromName('extensions')
+            ->getConnection()
+            ->table('ombu_modules')
+            ->pluck('module_id', 'name');
+
+        foreach (Module::getModuleNames() as $name) {
+            $databaseName = Module::FromName($name)->getNameAsSeenInOmbuModules();
+            $this->assertArrayHasKey($databaseName, $databaseModuleIds, "Database module '$databaseName' was not found");
+            $this->assertSame(
+                (int) $databaseModuleIds[$databaseName],
+                Module::moduleIdForModuleName($name),
+                "Unexpected database module ID for '$name'"
+            );
         }
     }
 
