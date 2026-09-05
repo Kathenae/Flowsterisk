@@ -48,11 +48,12 @@ class App
 
          return $handler->handle($request);
       });
-      $app->addErrorMiddleware(
+      $errorMiddleware = $app->addErrorMiddleware(
          $config['displayErrorDetails'] ?? false,
          true,
          true
       );
+      $errorMiddleware->setDefaultErrorHandler(new ApiErrorHandler(self::logger()));
    }
 
    public static function run()
