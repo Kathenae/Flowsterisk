@@ -127,6 +127,11 @@ $executor->registerCommand('test', function($parameters) {
     $testApp->run(['phpunit', "--testdox", "Tests"]);
 });
 
+$executor->registerCommand('test:feature', function($parameters) {
+    $testApp = new PHPUnit\TextUI\Application();
+    $testApp->run(['phpunit', "--testdox", "Tests/Feature"]);
+});
+
 $executor->registerCommand('shell', function($parameters){
     // Open php interactive shell with autoloaded classes
     echo "\n";
