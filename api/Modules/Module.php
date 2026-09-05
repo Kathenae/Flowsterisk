@@ -183,6 +183,7 @@ class Module extends OmbuModel
                         d.category_id, 
                         m.name AS module_name, 
                         d.module_id AS module_id 
+                        d.index AS module_instance_id
                     FROM ombu_destinations AS d 
                     LEFT JOIN ombu_modules AS m 
                         ON d.module_id = m.module_id 
@@ -190,7 +191,7 @@ class Module extends OmbuModel
             $result = $this->getConnection()->select($sql, [$destination->destinationId]);
             if (!empty($result)) {
                 $destination->moduleName = self::resolveModuleName($result[0]->module_name);
-                $destination->moduleId = (string) $result[0]->module_id;
+                $destination->moduleInstanceId = (string) $result[0]->module_instance_id;
             }
         }
         return $destinationData;

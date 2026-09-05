@@ -37,7 +37,7 @@ class DestinationData implements Arrayable {
         /**
          * The id of the specific instance this module is pointing to
          */
-        public ?string $moduleId = null,
+        public ?string $moduleInstanceId = null,
     ){ 
     }
 
@@ -48,7 +48,7 @@ class DestinationData implements Arrayable {
             'enabled' => $this->enabled,
             'can_toggle_enabled_state' => $this->canToggleEnabledState,
             'module_name' => $this->moduleName, 
-            'module_id' => $this->moduleId,
+            'module_instance_id' => $this->moduleInstanceId,
         ];
     }
 }
