@@ -11,7 +11,6 @@ use Api\Framework\App;
 use Api\Framework\GET;
 use Api\Framework\POST;
 use Api\Framework\PUT;
-use Api\Framework\StringUtils;
 use Api\Modules\Module;
 
 class ModuleController

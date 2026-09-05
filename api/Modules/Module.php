@@ -52,17 +52,18 @@ class Module extends OmbuModel
 
     public static function isValidModuleName(string $name)
     {
-        return in_array(Str::pluralStudly($name), self::$moduleNames);
-        ;
+        $name = trim($name);
+        return in_array(Str::pluralStudly($name), self::$moduleNames, true);
     }
 
     public static function FromName(string $name): static
     {
+        $name = trim($name);
+
         if (self::isValidModuleName($name) == false) {
             throw new UnknownModuleException($name);
         }
 
-        $name = trim($name);
         $modelClass = self::moduleNameToClassName($name);
         if (class_exists($modelClass)) {
             return new $modelClass();
@@ -123,7 +124,7 @@ class Module extends OmbuModel
     public function getModuleName()
     {
         if ($this->moduleName != null) {
-            return Str::snake(str::pluralStudly($this->moduleName));
+            return Str::snake(Str::pluralStudly(trim($this->moduleName)));
         }
         return Str::snake(Str::pluralStudly(class_basename($this)));
     }
