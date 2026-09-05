@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Tests\Feature;
+namespace Api\Tests;
 
 use Api\Framework\App;
 use PHPUnit\Framework\TestCase;
@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Slim\Psr7\Factory\StreamFactory;
 
-abstract class FeatureTestCase extends TestCase
+abstract class AppTestCase extends TestCase
 {
     protected function get(string $uri): ResponseInterface
     {

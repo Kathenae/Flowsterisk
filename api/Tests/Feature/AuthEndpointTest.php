@@ -2,7 +2,9 @@
 
 namespace Api\Tests\Feature;
 
-final class AuthEndpointTest extends FeatureTestCase
+use Api\Tests\AppTestCase;
+
+final class AuthEndpointTest extends AppTestCase
 {
     public function testAuthEndpointRejectsMissingCredentials(): void
     {
