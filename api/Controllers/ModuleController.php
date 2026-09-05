@@ -12,7 +12,7 @@ use Api\Framework\GET;
 use Api\Framework\POST;
 use Api\Framework\PUT;
 use Api\Framework\StringUtils;
-use Api\Modules\BaseModule;
+use Api\Modules\Module;
 
 class ModuleController
 {
@@ -23,9 +23,7 @@ class ModuleController
         $moduleBuilder = $this->findBuilder($moduleName);
         if (isset($moduleBuilder)) {
             $entries = $moduleBuilder->get();
-            return $response->success([
-                'entries' => $entries,
-            ]);
+            return $response->success($entries->toArray());
         } else {
             return $response->failure('MODULE_NOT_FOUND');
         }
@@ -39,9 +37,7 @@ class ModuleController
         $moduleBuilder = $this->findBuilder($moduleName);
         if (isset($moduleBuilder)) {
             $entry = $moduleBuilder->find($id);
-            return $response->success([
-                'entry' => $entry
-            ]);
+            return $response->success($entry->toArray());
         } else {
             return $response->failure('MODULE_NOT_FOUND');
         }
@@ -92,7 +88,7 @@ class ModuleController
     {
         $moduleName = trim($moduleName);
         $tableName = 'ombu_' . $moduleName;
-        $model = $this->findModule($moduleName);
+        $model = Module::FromName($moduleName);
         if (isset($model)) {
             return $model;
         } else if (App::database()->connection('modules')->getSchemaBuilder()->hasTable($tableName)) {
@@ -104,23 +100,10 @@ class ModuleController
 
     private function makeValidation(string $moduleName, array $data): Validator|null
     {
-        $model = $this->findModule($moduleName);
+        $model = Module::FromName($moduleName);
         if ($model) {
             $validation = $model->validate($data);
             return $validation;
-        } else {
-            return null;
-        }
-    }
-
-    private function findModule($moduleName): BaseModule|null
-    {
-        $moduleName = trim($moduleName);
-        $className = StringUtils::singularize($moduleName);
-        $className = StringUtils::snakeToPascalCase($className);
-        $modelClass = "Api\\Modules\\$className";
-        if (class_exists($modelClass)) {
-            return new $modelClass();
         } else {
             return null;
         }

@@ -6,7 +6,7 @@ use Api\Framework\Validation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Validation\Validator;
 
-class Extension extends BaseModule {
+class Extension extends Module {
     use HasFactory;
     
     protected $hidden = [
@@ -15,7 +15,6 @@ class Extension extends BaseModule {
     ];
 
     public function validate(array $data) : Validator {
-
         $validator = Validation::make($data, [
             'name' => 'max:255',
         ]);

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently -c green,blue npm:client npm:server",
+    "api:test": "cd api && bin/manage test",
     "client": "vite",
     "server": "cd api && php bin/manage run",
     "build": "tsc && vite build",

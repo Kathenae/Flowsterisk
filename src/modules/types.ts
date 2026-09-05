@@ -38,9 +38,15 @@ export type Module<T extends ModuleInstance> = {
    instance? : T,
 }
 
+type ModuleType = "terminate_call" | "extensions" | "inbound_routes" | "dynamic_destinations" | "ivrs"
+type Destination = {
+   type: 'normal',
+   module: ModuleInstance,
+}
+
 export interface ModuleInstance {
    id: number,
-   type: string,
+   type: ModuleType,
    label: string,
    destinations: {
       [key: string] : ModuleInstance

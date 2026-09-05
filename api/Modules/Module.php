@@ -1,0 +1,167 @@
+<?php
+
+namespace Api\Modules;
+
+use Api\Exceptions\UnknownModuleException;
+use Api\Framework\StringUtils;
+use Api\Framework\Validation;
+use Api\Models\OmbuModel;
+use Api\Modules\Data\DestinationData;
+use Illuminate\Validation\Validator;
+use Illuminate\Support\Str;
+
+class Module extends OmbuModel
+{
+    private ?string $moduleName = null;
+
+    private static array $moduleNames = [
+        'inbound_routes',
+        'extensions',
+        'announcements',
+        'dynamic_destinations',
+        'ivrs',
+        'custom_applications',
+        'custom_contexts',
+        'parking_lots',
+        'callbacks',
+        'ring_groups',
+        'queues',
+        'outbound_routes',
+        'time_conditions',
+        'languages',
+        'nightmodes',
+        'trunks',
+    ];
+
+    private $destinationColumnsMeta = [
+        'destination_id',
+        'hangup_destination_id',
+        'match_destination_id',
+        'mismatch_destination_id',
+        'normal_destination_id',
+        'override_destination_id',
+        'fax_destination_id',
+        'invalid_destination_id',
+        'timeout_destination_id',
+    ];
+
+    public static function getModuleNames()
+    {
+        return self::$moduleNames;
+    }
+
+    public static function isValidModuleName(string $name)
+    {
+        return in_array(Str::pluralStudly($name), self::$moduleNames);
+        ;
+    }
+
+    public static function FromName(string $name): static
+    {
+        if (self::isValidModuleName($name) == false) {
+            throw new UnknownModuleException($name);
+        }
+
+        $name = trim($name);
+        $modelClass = self::moduleNameToClassName($name);
+        if (class_exists($modelClass)) {
+            return new $modelClass();
+        }
+
+        $module = new static();
+        $module->moduleName = $name;
+        return $module;
+    }
+
+    public static function moduleNameToClassName(string $name)
+    {
+        $name = trim($name);
+        $className = StringUtils::singularize($name);
+        $className = StringUtils::snakeToPascalCase($className);
+        $modelClass = "Api\\Modules\\$className";
+        return $modelClass;
+    }
+
+    public function getId()
+    {
+        return $this->attributes[$this->getKeyName()];
+    }
+
+    public function getLabel()
+    {
+        return $this->getModuleName();
+    }
+
+    public function newInstance($attributes = [], $exists = false)
+    {
+        $model = parent::newInstance($attributes, $exists);
+
+        if (isset($this->moduleName)) {
+            $model->moduleName = $this->moduleName;
+        }
+
+        return $model;
+    }
+
+    public function getTable()
+    {
+        if (isset($this->moduleName)) {
+            return $this->table ?? 'ombu_' . Str::snake(Str::pluralStudly($this->getModuleName()));
+        }
+        return $this->table ?? 'ombu_' . Str::snake(Str::pluralStudly(class_basename($this)));
+    }
+
+    public function getKeyName()
+    {
+        if ($this->moduleName != null) {
+            $module_name = Str::singular($this->getModuleName());
+            return $this->primaryKey ?? Str::snake(Str::studly($module_name)) . '_id';
+        }
+        return $this->primaryKey ?? Str::snake(Str::studly(class_basename($this))) . '_id';
+    }
+
+    public function getModuleName()
+    {
+        if ($this->moduleName != null) {
+            return Str::snake(str::pluralStudly($this->moduleName));
+        }
+        return Str::snake(Str::pluralStudly(class_basename($this)));
+    }
+
+    public function toArray()
+    {
+        return [
+            ...parent::toArray(),
+            "_node" => [
+                'type' => $this->getModuleName(),
+                'key_name' => $this->getKeyName(),
+                'edges' => $this->getDestinationData(),
+            ]
+        ];
+    }
+
+    /**
+     * @return DestinationData[]
+     */
+    public function getDestinationData(): array
+    {
+        $destination_ids = $this->extractColumnsIfExists($this->destinationColumnsMeta, $this->attributes);
+        return $destination_ids;
+    }
+
+    private function extractColumnsIfExists(array $column_names, array $attributes)
+    {
+        $result = [];
+        foreach ($column_names as $column) {
+            if (key_exists($column, $attributes)) {
+                $result[$column] = new DestinationData($attributes[$column], $column);
+            }
+        }
+        return $result;
+    }
+
+    public function validate(array $data): Validator
+    {
+        return Validation::make($data, []);
+    }
+}
