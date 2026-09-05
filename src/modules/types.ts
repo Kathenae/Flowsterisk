@@ -38,7 +38,24 @@ export type Module<T extends ModuleInstance> = {
    instance? : T,
 }
 
-type ModuleType = "terminate_call" | "extensions" | "inbound_routes" | "dynamic_destinations" | "ivrs"
+type ModuleType = 
+   'inbound_routes' |
+   'extensions' |
+   'announcements' |
+   'dynamic_destinations' |
+   'ivrs' |
+   'custom_applications' |
+   'custom_contexts' |
+   'parking_lots' |
+   'callbacks' |
+   'ring_groups' |
+   'queues' |
+   'outbound_routes' |
+   'time_conditions' |
+   'languages' |
+   'nightmodes' |
+   'trunks'
+   
 type Destination = {
    type: 'normal',
    module: ModuleInstance,

@@ -56,7 +56,7 @@ async function list() : Promise<ExtensionInstance[]>
       response.data.entries.forEach((entry : ModuleApiEntry<ExtensionInstance>) => {
          const extension : ExtensionInstance = {
             ...entry,
-            type: "Extensions",
+            type: "extensions",
             id: entry.extension_id,
             label: entry.name,
             destinations: {},

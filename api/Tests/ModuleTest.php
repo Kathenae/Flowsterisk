@@ -69,6 +69,48 @@ final class ModuleTest extends TestCase
         $this->assertFalse(Module::isValidModuleName('unknown_module'));
     }
 
+    public function testResolvesDatabaseModuleAliases()
+    {
+        $announcement = Module::FromName('preannoun');
+        $ivr = Module::FromName('ivr');
+        $parking = Module::FromName('parking');
+        $customApplication = Module::FromName('custom_app');
+        $customDestination = Module::FromName('custom_dest');
+
+        $this->assertTrue(Module::isValidModuleName('preannoun'));
+        $this->assertTrue(Module::isValidModuleName('ivr'));
+        $this->assertTrue(Module::isValidModuleName('parking'));
+        $this->assertTrue(Module::isValidModuleName('custom_app'));
+        $this->assertTrue(Module::isValidModuleName('custom_dest'));
+
+        $this->assertSame(Module::class, $announcement::class);
+        $this->assertSame('announcements', $announcement->getModuleName());
+        $this->assertSame('ombu_announcements', $announcement->getTable());
+        $this->assertSame('Api\\Modules\\Ivr', $ivr::class);
+        $this->assertSame('ombu_ivrs', $ivr->getTable());
+        $this->assertSame('ivr_id', $ivr->getKeyName());
+        $this->assertSame('ombu_parking_lots', $parking->getTable());
+        $this->assertSame('ombu_custom_applications', $customApplication->getTable());
+        $this->assertSame('ombu_custom_destinations', $customDestination->getTable());
+    }
+
+    public function testDoesNotLeakAliasesInSerializedModuleNames()
+    {
+        $module = Module::FromName('extensions');
+        $module->setAttribute('destination_id', 1);
+        $module->setAttribute('hangup_destination_id', 2);
+        $module->setAttribute('invalid_destination_id', 4);
+
+        $destinationData = $module->getDestinationData();
+
+        $this->assertSame('parking_lots', $destinationData['destination_id']->moduleName);
+        $this->assertSame('custom_applications', $destinationData['hangup_destination_id']->moduleName);
+        $this->assertSame('announcements', $destinationData['invalid_destination_id']->moduleName);
+        $this->assertNotContains('parking', array_column($destinationData, 'moduleName'));
+        $this->assertNotContains('custom_app', array_column($destinationData, 'moduleName'));
+        $this->assertNotContains('preannoun', array_column($destinationData, 'moduleName'));
+    }
+
     public function testModuleNameToClassNameResolvesExpectedClasses()
     {
         $this->assertSame('Api\\Modules\\Extension', Module::moduleNameToClassName('extensions'));

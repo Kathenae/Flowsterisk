@@ -28,6 +28,16 @@ class DestinationData implements Arrayable {
          * @var bool
          */
         public bool $canToggleEnabledState = false,
+
+        /**
+         * The name of the module this destination is pointing to
+         */
+        public ?string $moduleName = null,
+
+        /**
+         * The id of the specific instance this module is pointing to
+         */
+        public ?string $moduleId = null,
     ){ 
     }
 
@@ -36,7 +46,9 @@ class DestinationData implements Arrayable {
             'destination_id' => $this->destinationId,
             'label' => $this->label,
             'enabled' => $this->enabled,
-            'can_toggle_enabled_state' => $this->canToggleEnabledState
+            'can_toggle_enabled_state' => $this->canToggleEnabledState,
+            'module_name' => $this->moduleName, 
+            'module_id' => $this->moduleId,
         ];
     }
 }
